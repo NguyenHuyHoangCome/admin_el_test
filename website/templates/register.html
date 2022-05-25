@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Focus - Bootstrap Admin Dashboard </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/focus-2/images/favicon.png">
+    <link rel="stylesheet" href="../static/vendor/owl-carousel/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../static/vendor/owl-carousel/css/owl.theme.default.min.css">
+    <link href="../static/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
+    <link href="../static/css/style.css" rel="stylesheet">
+    <link href="../static/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+
+
+
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <a href="/" class="brand-logo">
+                <img class="brand-title" src="../static/images/Cho.png" alt="">
+            </a>
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                        </div>
+
+                        <ul class="navbar-nav header-right" id="action">
+                            <li class="nav-item dropdown notification_dropdown">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown" @click="checed()">
+                                    <i class="mdi mdi-bell"></i>
+                                    <div class="" id="myDIV"></div>
+                                </a>
+
+
+
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <ul class="list-unstyled">
+
+                                        <li class="media " v-for="res in list_action " :key="res.Id" :id="res.name">
+                                            <span class="success"><i class="ti-user"></i></span>
+                                            <div class="media-body">
+                                                <a href="#">
+                                                    <p><strong>{{res.name}}</strong> đã
+                                                    </p>
+                                                    <span> {{res.do}} {{res.object}}</span>
+                                                </a>
+                                                <p class="notify-time">vào {{res.date}}</p>
+                                            </div>
+
+
+                                        </li>
+
+
+
+
+
+                                    </ul>
+
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown header-profile">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                                    <i class="mdi mdi-account"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="#" class="dropdown-item">
+                                        <i class="icon-user"></i>
+                                        <span class="ml-2">{[email]} </span>
+                                    </a>
+                                    <a href="/logout" class="dropdown-item">
+                                        <i class="icon-key"></i>
+                                        <span class="ml-2">Logout </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="quixnav">
+            <div class="quixnav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label first">Menu Chính</li>
+                    <li><a href="/">Trang chủ </a></li>
+                    {% if role=='Admin' or role=='Manager' %}
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-single-04"></i><span class="nav-text"> Quản lý User</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="/user">Tất cả user</a></li>
+                            <li><a href="/admin">Quản lý tài khoản các Admin</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if role=='Admin' or role=='Manager' or role=='Editor' %}
+                    <li class="nav-label">Câu hỏi</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-app-store"></i><span class="nav-text">Quản Lý câu hỏi</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="/themques">Thêm câu hỏi</a></li>
+
+                            <li><a href="/cauhoi">Tất cả câu hỏi</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if role=='Admin' or role=='Manager' or role=='Editor' %}
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-chart-bar-33"></i><span class="nav-text">Quản lý danh mục</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="/them_danhmuc">Thêm danh mục</a></li>
+
+                            <li><a href="/danhmuc">Tất cả danh mục</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+
+
+
+                </ul>
+            </div>
+
+
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body" id="app">
+            <!-- row -->
+            <div class="container-fluid">
+                <div class="row">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="col-12">
+
+                        <div class="alert alert-{[ category ]} solid alert-right-icon alert-dismissible fade show">
+                            <span><i class="mdi mdi-check"></i></span>
+                            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close"><span><i
+                                        class="mdi mdi-close"></i></span>
+                            </button> {[ message ]}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Tạo tài khoản trang quản lý</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-validation">
+                                    <form class="form-valide" action="" method="post" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <div class="col-xl-6">
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 col-form-label" for="val-email">Email <span
+                                                            class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="val-email" name="val-email" placeholder="Nhập email..">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 col-form-label" for="val-password">Password
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+                                                        <input type="password" class="form-control" id="val-password" name="val-password" placeholder="Nhập mật khẩu..">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 col-form-label" for="val-confirm-password">Confirm Password <span
+                                                            class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+                                                        <input type="password" class="form-control" id="val-confirm-password" name="val-confirm-password" placeholder="Xác nhận mật khẩu...">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 col-form-label" for="val-name">Name <span
+                                                            class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="val-name" name="val-name" placeholder="Nhập tên..">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 col-form-label" for="val-skill">Chức vụ
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+                                                        <select class="form-control" id="val-skill" name="val-skill">
+                                                            <option value="">Please select</option>
+                                                          
+                                                            <option value="Admin">Admin</option>
+                                                            <option value="Manager">Manager</option>
+                                                            <option value="Editor">Editor</option>
+                                                            <option value="">User_app</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+       
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 col-form-label" for="val-phoneus">Số điện thoại
+                                                        <span class="text-danger"></span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" id="val-phoneus" name="val-phoneus" placeholder="0000">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 col-form-label" for="val-age">Tuổi
+                                                        <span class="text-danger"></span>
+                                                    </label>
+                                                    <div class="col-lg-6">
+                                                        <input type="number" class="form-control" id="val-age" name="val-age" placeholder="0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-6">
+                                               
+     
+                                                <div class="profile-photo" style="margin-bottom: 20px">
+                                                    <img v-if="previewImage" :src="previewImage" class="img-fluid rounded-circle uploading-image"
+                                                      style="width: 130px; height: 130px" alt="" />
+                                                    <img v-else src="" alt="Chọn ảnh đại diện" class="img-fluid rounded-circle uploading-image"
+                                                      style="width: 130px; height: 130px" alt="" />
+                                                    <hr />
+                                                    <input type="file" accept="image/*" @change="uploadImage" name="file" />
+                                                  </div>
+                                                <div class="form-group row">
+                                                    <div class="col-lg-8 ml-auto">
+                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href="#" target="_blank">Quixkit</a> 2019</p>
+                <p>Distributed by <a href="https://themewagon.com/" target="_blank">Themewagon</a></p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="../static/vendor/global/global.min.js"></script>
+    <script src="../static/js/quixnav-init.js"></script>
+    <script src="../static/js/custom.min.js"></script>
+
+
+    <!-- Vectormap -->
+    <script src="../static/vendor/raphael/raphael.min.js"></script>
+    <script src="../static/vendor/morris/morris.min.js"></script>
+
+
+    <script src="../static/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="../static/vendor/chart.js/Chart.bundle.min.js"></script>
+
+    <script src="../static/vendor/gaugeJS/dist/gauge.min.js"></script>
+
+    <!--  flot-chart js -->
+    <script src="../static/vendor/flot/jquery.flot.js"></script>
+    <script src="../static/vendor/flot/jquery.flot.resize.js"></script>
+
+    <!-- Owl Carousel -->
+    <script src="../static/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+
+    <!-- Counter Up -->
+    <script src="../static/vendor/jqvmap/js/jquery.vmap.min.js"></script>
+    <script src="../static/vendor/jqvmap/js/jquery.vmap.usa.js"></script>
+    <script src="../static/vendor/jquery.counterup/jquery.counterup.min.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="../static/js/dashboard/dashboard-1.js"></script>
+    <script src="../static/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../static/js/plugins-init/datatables.init.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+
+    <script language="JavaScript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                list_user: [],
+                searchQuery: null,
+                one_user: null,
+                tong: '',
+                phan_tu: '',
+                previewImage: null,
+            },
+            methods: {
+                uploadImage(e) {
+          const image = e.target.files[0];
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.onload = (e) => {
+            this.previewImage = e.target.result;
+          };
+        },
+            },
+            created() {
+    
+            },
+            computed: {
+                
+            },
+        });
+
+    </script>
+     <script language="JavaScript">
+        new Vue({
+            el: '#action',
+            data: {
+                list_action: [],
+                bien: 1,
+            },
+            methods: {
+                async ren_action() {
+                    let str = "/api/action";
+
+                    try {
+                        let res = await axios.get(str);
+                        this.list_action = await res.data;
+                        //console.log(res.data);
+                        // this.checed()
+                        bien = 1
+                        this.re_load()
+
+                    } catch (err) {
+                        console.log(err)
+                    }
+                },
+                // thanh thông báo bấm vào là cập nhật lên viewer firesotre và tắt nút thông báo có id là myDIV
+                checed() {
+                    var newData = JSON.parse(JSON.stringify(this.list_action));
+                    var id = [];
+                    for (i in newData) {
+                  
+                        id.push(newData[i].Id);
+                
+                        if (newData[i].viewer.includes("{[email]}") == true) {
+       
+                        } else {
+                            var element = document.getElementById("myDIV");
+                            element.classList.remove("pulse-css");
+                            let str = "/add_action/" + "{[email]}/" + id[i];
+                            axios.get(str);
+           
+                        }
+                    };
+                },
+                //Load trnag cho nút thông báo
+                re_load() {
+                    var newData = JSON.parse(JSON.stringify(this.list_action));
+                    for (i in newData) {
+        
+               
+                        if (newData[i].viewer.includes("{[email]}") == true) {
+                       
+                        } else {
+                            var element = document.getElementById("myDIV");
+                            element.classList.add("pulse-css");
+                        }
+                    };
+                },
+            },
+            created() {
+                this.ren_action();
+            },
+        });
+    </script>
+        <!-- Jquery Validation -->
+        <script src="../static/vendor/jquery-validation/jquery.validate.min.js"></script>
+        <!-- Form validate init -->
+        <script src="../static/js/plugins-init/jquery.validate-init.js"></script>
+</body>
+
+</html>

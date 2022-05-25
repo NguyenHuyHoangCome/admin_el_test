@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Focus - Bootstrap Admin Dashboard</title>
+  <!-- Favicon icon -->
+  <link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon.png" />
+  <!-- Datatable -->
+  <link href="../static/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
+  <!-- Custom Stylesheet -->
+  <link href="../static/css/style.css" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://www.w3schools.com/lib/w3.js"></script>
+  <style>
+    .form-control:disabled {
+      background-color: rgb(175, 175, 175);
+    }
+  </style>
+</head>
+
+<body>
+  <!--*******************
+        Preloader start
+    ********************-->
+  <div id="preloader">
+    <div class="sk-three-bounce">
+      <div class="sk-child sk-bounce1"></div>
+      <div class="sk-child sk-bounce2"></div>
+      <div class="sk-child sk-bounce3"></div>
+    </div>
+  </div>
+  <!--*******************
+        Preloader end
+    ********************-->
+
+  <!--**********************************
+        Main wrapper start
+    ***********************************-->
+  <div id="main-wrapper">
+    <!--**********************************
+            Nav header start
+        ***********************************-->
+    <div class="nav-header">
+      <a href="/" class="brand-logo">
+        <img class="brand-title" src="../static/images/Cho.png" alt="" />
+      </a>
+
+      <div class="nav-control">
+        <div class="hamburger">
+          <span class="line"></span><span class="line"></span><span class="line"></span>
+        </div>
+      </div>
+    </div>
+    <!--**********************************
+            Nav header end
+        ***********************************-->
+
+    <!--**********************************
+            Header start
+        ***********************************-->
+    <div class="header">
+      <div class="header-content">
+        <nav class="navbar navbar-expand">
+          <div class="collapse navbar-collapse justify-content-between">
+            <div class="header-left">
+            </div>
+
+            <ul class="navbar-nav header-right" id="action">
+              <li class="nav-item dropdown notification_dropdown">
+                <a class="nav-link" href="#" role="button" data-toggle="dropdown" @click="checed()">
+                  <i class="mdi mdi-bell"></i>
+                  <div class="" id="myDIV"></div>
+                </a>
+
+
+
+                <div class="dropdown-menu dropdown-menu-right">
+                  <ul class="list-unstyled">
+
+                    <li class="media " v-for="res in list_action " :key="res.Id" :id="res.name">
+                      <span class="success"><i class="ti-user"></i></span>
+                      <div class="media-body">
+                        <a href="#">
+                          <p><strong>{{res.name}}</strong> đã
+                          </p>
+                          <span> {{res.do}} {{res.object}}</span>
+                        </a>
+                        <p class="notify-time">vào {{res.date}}</p>
+                      </div>
+
+
+                    </li>
+
+
+
+
+
+                  </ul>
+
+                </div>
+              </li>
+              <li class="nav-item dropdown header-profile">
+                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                  <i class="mdi mdi-account"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <a href="#" class="dropdown-item">
+                    <i class="icon-user"></i>
+                    <span class="ml-2">{[email]} </span>
+                  </a>
+                  <a href="/logout" class="dropdown-item">
+                    <i class="icon-key"></i>
+                    <span class="ml-2">Logout </span>
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <!--**********************************
+          Header end ti-comment-alt
+      ***********************************-->
+
+    <!--**********************************
+          Sidebar start
+      ***********************************-->
+    <div class="quixnav">
+      <div class="quixnav-scroll">
+        <ul class="metismenu" id="menu">
+          <li class="nav-label first">Menu Chính</li>
+          <li><a href="/">Trang chủ </a></li>
+          {% if role=='Admin' or role=='Manager' %}
+          <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                class="icon icon-single-04"></i><span class="nav-text"> Quản lý User</span></a>
+            <ul aria-expanded="false">
+              <li><a href="/user">Tất cả user</a></li>
+              <li><a href="/admin">Quản lý tài khoản các Admin</a></li>
+            </ul>
+          </li>
+          {% endif %}
+          {% if role=='Admin' or role=='Manager' or role=='Editor' %}
+          <li class="nav-label">Câu hỏi</li>
+          <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                class="icon icon-app-store"></i><span class="nav-text">Quản Lý câu hỏi</span></a>
+            <ul aria-expanded="false">
+              <li><a href="/themques">Thêm câu hỏi</a></li>
+
+              <li><a href="/cauhoi">Tất cả câu hỏi</a></li>
+            </ul>
+          </li>
+          {% endif %}
+          {% if role=='Admin' or role=='Manager' or role=='Editor' %}
+          <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                class="icon icon-chart-bar-33"></i><span class="nav-text">Quản lý danh mục</span></a>
+            <ul aria-expanded="false">
+              <li><a href="/them_danhmuc">Thêm danh mục</a></li>
+
+              <li><a href="/danhmuc">Tất cả danh mục</a></li>
+            </ul>
+          </li>
+          {% endif %}
+
+
+
+        </ul>
+      </div>
+
+
+    </div>
+  </div>
+  <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+  <!--**********************************
+            Content body start
+        ***********************************-->
+  <div class="content-body" id="app">
+    <div class="container-fluid">
+      <!-- row -->
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">Tất cả danh mục</h4>
+              <br>
+              <div class="row">
+                <div class="col-sm-8">
+                  <select class="form-control" aria-label="Default select example" @change="onChange4($event)"
+                    id="select_et" style="width: 70px;">
+                    <option value="5"> 05</option>
+                    <option value="10"> 10</option>
+                    <option value="20"> 20</option>
+                    <option value="50"> 50</option>
+                    <option value="100"> 100</option>
+                    <br>
+                  </select>
+                </div>
+              </div>
+              <select class="form-control" aria-label="Default select example" @change="onChange($event) " id="id01"
+                style="width: 250px;" name="Id_cate_dkt">
+                <option selected value="Null">Dạng kiến thức</option>
+                <option v-for="res in list_user" :key="res.Id" :value="res.Id"> {{res.Name}}
+                </option>
+
+                <br>
+              </select>
+              <select class="form-control" aria-label="Default select example" disabled @change="onChange1($event)"
+                id="id02" style="width: 250px;" name="Id_cate_dvkt">
+                <option id="h2nul" selected value="Null">Đơn vị kiến thức</option>
+                <option v-for="res in list_user1" :key="res.Id" :value="res.Id"> {{res.Name}}
+                </option>
+
+
+              </select>
+              <div class="col-sm-4">
+
+                <input v-on:keyup="change_data(this)" v-model="searchQuery" id="search_ver1" type="text"
+                  class="form-control" placeholder="Tìm kiếm " />
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table table id="" class="table">
+                  <thead>
+                    <tr>
+                      <th>STT</th>
+                      <th>ID</th>
+                      <th>Mô tả chi tiết</th>
+                      <th>Slug</th>
+                      <th>Sửa</th>
+                      <th>Xóa</th>
+                    </tr>
+                  </thead>
+                  <tbody id="myTable">
+                    <tr v-for="(res,index) in resultQuery" :key="res.Id">
+                      <td id="">{{index +1}}</td>
+                      <td>{{res.Id}}</td>
+                      <td>{{res.Name}}</td>
+                      <td>{{res.Slug}}</td>
+                      <td>
+                        <a class="btn btn-rounded btn-outline-success" :href="'sua/' + key +'/'+ res.Id">Sửa</a>
+                      </td>
+                      <td>
+                        <button class="btn btn-rounded btn-outline-danger"
+                          @click="xoa('/del_mtct/'+ key + '/' + res.Id)">
+                          Xóa
+                        </button>
+
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>STT</th>
+                      <th>ID</th>
+                      <th>Mô tả chi tiết</th>
+                      <th>Slug</th>
+                      <th>Sửa</th>
+                      <th>Xóa</th>
+                    </tr>
+                  </tfoot>
+                </table>
+                <hr>
+                <span id="dong"> </span><span>trong tổng: {{tong}} danh mục </span>
+                <div class="col-md-12 text-center">
+
+                  <ul class="pagination" id="myPager">
+
+
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table" v-bind:style="table_vue">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th v-bind:style="boder_css_vue">Dạng kiến thức</th>
+                      <th v-bind:style="boder_css_vue">Đơn vị kiến thức</th>
+                      <th v-bind:style="boder_css_vue">Mô tả chi tiết</th>
+
+                    </tr>
+                  </thead>
+                  <tbody id="zone_data">
+                  </tbody>
+                  <tfoot class="thead-dark">
+                    <tr>
+                      <th v-bind:style="boder_css_vue">Dạng kiến thức</th>
+                      <th v-bind:style="boder_css_vue">Đơn vị kiến thức</th>
+                      <th v-bind:style="boder_css_vue">Mô tả chi tiết</th>
+                    </tr>
+                  </tfoot>
+                </table>
+                <hr>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--**********************************
+            Content body end
+        ***********************************-->
+
+  <!--**********************************
+            Footer start
+        ***********************************-->
+  <div class="footer">
+    <div class="copyright">
+      <p>
+        Copyright © Designed &amp; Developed by
+        <a href="#" target="_blank">Quixkit</a> 2019
+      </p>
+    </div>
+
+  </div>
+  <!--**********************************
+            Footer end
+        ***********************************-->
+
+  <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+  <!--**********************************
+           Support ticket button end
+        ***********************************-->
+  </div>
+  <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+  <!--**********************************
+        Scripts
+    ***********************************-->
+  <!-- Required vendors -->
+  <script src="../static/vendor/global/global.min.js"></script>
+  <script src="../static/js/quixnav-init.js"></script>
+  <script src="../static/js/custom.min.js"></script>
+
+  <!-- Datatable -->
+  <script src="../static/vendor/datatables/js/jquery.dataTables.min.js"></script>
+  <script src="../static/js/plugins-init/datatables.init.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+  <script>
+//  $(document).ready(function() {
+//     $('#pg1').on('click', function() {
+//         alert("Previous alert");
+//     });
+// });
+  </script>
+  <script language="JavaScript">
+    var app = new Vue({
+      el: "#app",
+
+      data: {
+        user_id: "",
+        list_user: [],
+        list_dm: [],
+        list_dvkt: [],
+        list_user1: [],
+        searchQuery: null,
+        key: document.getElementById("id02").value,
+        tong: '',
+        phan_tu: '', list_dkt_for_table: [],
+        table_vue: {
+          'border-collapse': 'collapse',
+          'border-spacing': '0px',
+          'border': '2px solid'
+        },
+        boder_css_vue: {
+          'border': '1px solid black'
+        }
+      },
+      methods: {
+        async getUser() {
+          try {
+            let res = await axios.get("/api/dkt_ver2");
+            this.list_user = res.data;
+            this.tong = Object.keys(res.data).length;
+
+          } catch (err) {
+            console.log(err);
+          }
+          var et = document.getElementById("select_et").value;
+          setTimeout(function () {
+            $('#myTable').pageMe({
+              pagerSelector: '#myPager',
+              showPrevNext: true,
+              hidePageNumbers: false,
+              perPage: parseInt(et),
+            })
+          }, 0);
+
+        }, async getdkt_ver2() {
+          try {
+            let res2 = await axios.get('/api/dkt_ver2');
+            this.list_dm = res2.data;
+
+          } catch (err) {
+            console.log(err)
+          }
+          var et = document.getElementById("select_et").value;
+          await setTimeout(function () {
+            $('#myTable').pageMe({
+              pagerSelector: '#myPager',
+              showPrevNext: true,
+              hidePageNumbers: false,
+              perPage: parseInt(et),
+            });
+          }, 0);
+        },
+
+        async getdvkt_ver2(e) {
+          try {
+            // let res2 = await axios.get("/api/dvkt_ver2");
+            // this.list_user = res2.data;
+            let res3 = await axios.get(e);
+
+            this.list_dm = res3.data;
+            //this.tong = Object.keys(res2.data).length;
+          } catch (err) {
+            console.log(err);
+          }
+          var et = document.getElementById("select_et").value;
+          setTimeout(function () {
+            $('#myTable').pageMe({
+              pagerSelector: '#myPager',
+              showPrevNext: true,
+              hidePageNumbers: false,
+              perPage: parseInt(et),
+            });
+          }, 0);
+          this.ptu();
+        },
+
+        async getmtct_ver2() {
+          try {
+            let res2 = await axios.get("/api/mtct_ver2");
+            this.list_dm = res2.data;
+
+          } catch (err) {
+            console.log(err);
+          }
+          var et = document.getElementById("select_et").value;
+          setTimeout(function () {
+            $('#myTable').pageMe({
+              pagerSelector: '#myPager',
+              showPrevNext: true,
+              hidePageNumbers: false,
+              perPage: parseInt(et),
+            });
+          }, 0);
+
+          await this.ptu();
+        },
+        async change_data(e) {
+
+          var et = document.getElementById("select_et").value;
+          await $('#myTable').pageMe({
+
+            pagerSelector: '#myPager',
+            showPrevNext: true,
+            hidePageNumbers: false,
+            perPage: parseInt(et),
+
+          });
+          this.ptu();
+
+        },
+
+        async onChange(event) {
+          const $select1 = document.querySelector('#id02');
+          const $option1 = $select1.querySelector('#h2nul');
+          $select1.value = $option1.value;
+
+          // 
+          document.getElementById("id02").disabled = false;
+          var select = event.target.value;
+
+          console.log(select);
+          let str = "/api/dvkt2/" + select;
+          console.log(str);
+
+          this.getdvkt_ver2(str);
+
+          console.log("day la select1", document.getElementById("id01").value);
+          // const $select = document.querySelector('#id04');
+          //const $option = $select.querySelector('#nu1');
+          //$select.value = $option.value;
+
+          this.tim_kiem();
+          if (document.getElementById("id01").value == "Null") {
+            this.key = "Null";
+            document.getElementById("id02").disabled = true;
+          }
+          else {
+            this.key = "Null2";
+          }
+
+          // if (event.target.value == "01") {
+          //   await this.getUser();
+          //   this.key=document.getElementById("02").value;
+
+          // }
+          // if (event.target.value == "03") {
+          //   await this.getmtct_ver2();
+          //   this.key=document.getElementById("02").value;
+          // }
+        },
+        async tim_kiem() {
+          var id01 = document.getElementById('id01').value;
+          var id02 = document.getElementById('id02').value;
+          console.log(id01);
+          console.log(id02);
+          var option = id01;
+          var option1 = id02;
+          let str = "/api/quess/" + option + "/" + option1;
+          console.log(str)
+          try {
+            let res = await axios.get(str);
+            this.list_dm = await res.data;
+
+            this.list_user1 = await res.data;
+            this.tong = Object.keys(res.data).length;
+            var et = document.getElementById("select_et").value;
+            this.phan_tu = et;
+
+
+          } catch (err) {
+            console.log(err)
+          }
+          var et = document.getElementById("select_et").value;
+          await setTimeout(function () {
+
+
+
+            $('#myTable').pageMe({
+              pagerSelector: '#myPager',
+              showPrevNext: true,
+              hidePageNumbers: false,
+              perPage: parseInt(et),
+            });
+          }, 0);
+
+
+
+        },
+        async onChange1(event) {
+
+
+          //document.getElementById("id03").disabled = false;
+          var select = event.target.value;
+
+          console.log(select);
+          let str = "/api/mtct2/" + select;
+          console.log(str);
+
+          //this.getmtct_ver2(str);
+
+          var id01 = document.getElementById('id01').value;
+
+          var id02 = document.getElementById('id02').value;
+          console.log(id01);
+          console.log(id02);
+          var option = id01;
+          var option1 = id02;
+          let strdm = "/api/quess/" + option + "/" + option1;
+          console.log(strdm)
+          try {
+            let res = await axios.get(strdm);
+            this.list_dm = await res.data;
+            console.log("list_dm", this.list_dm)
+            // this.list_user1 = await res.data;
+            this.tong = Object.keys(res.data).length;
+            var et = document.getElementById("select_et").value;
+            this.phan_tu = et;
+
+
+          } catch (err) {
+            console.log(err)
+          }
+          var et = document.getElementById("select_et").value;
+          await setTimeout(function () {
+
+
+
+            $('#myTable').pageMe({
+              pagerSelector: '#myPager',
+              showPrevNext: true,
+              hidePageNumbers: false,
+              perPage: parseInt(et),
+            });
+          }, 0);
+
+          this.key = "Null3";
+
+
+        },
+        async onChange4(event) {
+
+          var et = document.getElementById("select_et").value;
+
+          $('#myTable').pageMe({
+            pagerSelector: '#myPager',
+            showPrevNext: true,
+            hidePageNumbers: false,
+            perPage: parseInt(et),
+          });
+
+          await this.ptu();
+
+        },
+        ptu(event) {
+
+          var et = document.getElementById("select_et").value;
+          $('#myTable').pageMe({
+            pagerSelector: '#myPager',
+            showPrevNext: true,
+            hidePageNumbers: false,
+            perPage: parseInt(et),
+
+          });
+
+          var numOfVisibleRows = $('tr').filter(function () {
+            return $(this).css('display') == 'table-row';
+          }).length;
+          this.phan_tu = numOfVisibleRows - 2;
+
+        },
+
+        async load_trang() {
+          var et = document.getElementById("select_et").value;
+          await setTimeout(function () {
+
+
+            $('#myTable').pageMe({
+
+              pagerSelector: '#myPager',
+              showPrevNext: true,
+              hidePageNumbers: false,
+              perPage: parseInt(et),
+
+            });
+          }, 0);
+        },
+
+        xoa(a) {
+          console.log(a);
+          axios
+            .post(a)
+            .then((response) => {
+              const rest5 = response.data;
+              alert("Thông báo : " + rest5);
+            })
+            .catch((error) => console.error(error));
+
+          function time() {
+            window.location = "/danhmuc";
+          }
+          setTimeout(time, 600);
+        },
+        async get_dkt_for_table() {
+          try {
+            let res = await axios.get("/api/dkt_ver2_for_table");
+            this.list_dkt_for_table = res.data;
+
+          } catch (err) {
+            console.log(err);
+          }
+          this.createTabledata();
+        },
+        createTabledata() {
+          var tableContent = "";
+          for (var result = 0; result < this.list_dkt_for_table.length; result++) {
+            var rowspan = 0;
+            var detailLength = this.list_dkt_for_table[result].data_dvkt.length;
+            rowspan += detailLength;
+            for (var i = 0; i < detailLength; i++) {
+              rowspan += this.list_dkt_for_table[result].data_dvkt[i].data_mtct.length;
+            }
+            tableContent += "<tr><td rowspan = " + parseInt(1 + rowspan) + " " + "class=" + "den_px" + "> " + this
+              .list_dkt_for_table[result].Name + "</td></tr>";
+            var relasiLength = 0;
+            for (var i = 0; i < detailLength; i++) {
+              relasiLength = this.list_dkt_for_table[result].data_dvkt[i].data_mtct.length;
+              tableContent += "<tr><td rowspan=" + parseInt(1 + relasiLength) + " " + "class=" + "den_px" + ">" +
+                this.list_dkt_for_table[result].data_dvkt[i].Name + "</td></tr>";
+              for (var j = 0; j < relasiLength; j++) {
+                tableContent += "<tr><td" + " class=" + "den_px" + ">" + this.list_dkt_for_table[result].data_dvkt[i]
+                  .data_mtct[j].Name + "</td></tr>";
+              }
+            }
+          }
+          // console.log(tableContent);
+          $("tbody#zone_data").append(tableContent);
+          const demoClasses = document.querySelectorAll('.den_px');
+          var boder_style = '1px solid #E0E0E0';
+          demoClasses.forEach(element => {
+            element.style.border = boder_style
+          });
+
+        },
+      },
+      created() {
+        this.getUser();
+        this.getdkt_ver2();
+        this.get_dkt_for_table();
+        this.createTabledata();
+      },
+      computed: {
+        resultQuery() {
+          if (this.searchQuery) {
+            this.tong = Object.keys(this.list_dm.filter((item) => {
+              return this.searchQuery
+                .toLowerCase()
+                .split(" ")
+                .every((v) => item.Name.toLowerCase().includes(v));
+            })).length;
+
+            return this.list_dm.filter((item) => {
+              return this.searchQuery
+                .toLowerCase()
+                .split(" ")
+                .every((v) => item.Name.toLowerCase().includes(v));
+            })
+
+          }
+          else {
+            this.tong = Object.keys(this.list_dm).length;
+
+
+            return this.list_dm;
+          }
+        },
+
+      },
+    });
+
+  </script>
+  <script language="JavaScript">
+    new Vue({
+      el: '#action',
+      data: {
+        list_action: [],
+        bien: 1,
+      },
+      methods: {
+        async ren_action() {
+          let str = "/api/action";
+
+          try {
+            let res = await axios.get(str);
+            this.list_action = await res.data;
+            bien = 1
+            this.re_load()
+
+          } catch (err) {
+            console.log(err)
+          }
+        },
+        // thanh thông báo bấm vào là cập nhật lên viewer firesotre và tắt nút thông báo có id là myDIV
+        checed() {
+          var newData = JSON.parse(JSON.stringify(this.list_action));
+          var id = [];
+          for (i in newData) {
+            id.push(newData[i].Id);
+            if (newData[i].viewer.includes("{[email]}") == true) {
+            } else {
+              var element = document.getElementById("myDIV");
+              element.classList.remove("pulse-css");
+              let str = "/add_action/" + "{[email]}/" + id[i];
+              axios.get(str);
+            }
+          };
+        },
+        //Load trnag cho nút thông báo
+        re_load() {
+          var newData = JSON.parse(JSON.stringify(this.list_action));
+          for (i in newData) {
+            if (newData[i].viewer.includes("{[email]}") == true) {
+            } else {
+              var element = document.getElementById("myDIV");
+              element.classList.add("pulse-css");
+            }
+          };
+        },
+      },
+      created() {
+        this.ren_action();
+      },
+    });
+  </script>
+  <script>
+    // $('.pagination').on('click', 'li:not(.prev):not(.next)', function () {
+    //   alert("taitau");
+    // });
+
+  </script>
+  <script>
+
+
+
+    var hc = 0;
+    $.fn.pageMe = function (opts) {
+
+
+
+      $("li").remove(".page-item");
+      var et = document.getElementById("select_et").value;
+      var $this = this,
+        defaults = {
+          perPage: parseInt(et),
+          showPrevNext: false,
+          hidePageNumbers: false
+        },
+        settings = $.extend(defaults, opts);
+
+
+
+      var listElement = $this;
+      var perPage = settings.perPage;
+
+      var children = listElement.children();
+      var pager = $('.pager');
+
+      if (typeof settings.childSelector != "undefined") {
+        children = listElement.find(settings.childSelector);
+      }
+
+      if (typeof settings.pagerSelector != "undefined") {
+        pager = $(settings.pagerSelector);
+      }
+
+      var numItems = children.size();
+
+      var numPages = Math.ceil(numItems / perPage);
+
+      pager.data("curr", 0);
+      var curr = 0;
+
+      if (settings.showPrevNext) {
+
+        $('<li id="prev"  class="page-item"><a  class="prev_link  page-link">«</a></li>').appendTo(pager);
+
+      }
+
+
+      // Added class and id in li start
+      while (numPages > curr && (settings.hidePageNumbers == false)) {
+
+
+        $('<li  id="pg' + (curr + 1) + '" class="page-item num_page"><a  href="#" class="page_link page-link">' + (
+          curr + 1) + '</a></li>').appendTo(pager);
+
+        curr++;
+
+      }
+
+      // Added class and id in li end
+
+      if (settings.showPrevNext) {
+
+        $('<li id="next" class="page-item"><a href="#" class="next_link page-link">»</a></li>').appendTo(pager);
+
+      }
+
+      pager.find('.page_link:first').addClass('active');
+      pager.find('.prev_link').hide();
+      if (numPages <= 1) {
+        pager.find('.next_link').hide();
+      }
+      pager.children().eq(1).addClass("active");
+
+      children.hide();
+      children.slice(0, perPage).show();
+      if (numPages > 3) {
+        $('.pg').hide();
+        $('#pg1,#pg2,#pg3').show();
+
+      }
+
+      pager.find('li .page_link').click(function () {
+
+        // ptu();
+
+        var clickedPage = $(this).html().valueOf() - 1;
+        goTo(clickedPage, perPage);
+
+        return false;
+
+      });
+      function ptu() {
+
+        var numOfVisibleRows = $('tr').filter(function () {
+          return $(this).css('display') == 'table-row';
+        }).length;
+        document.getElementById("dong").innerHTML = "Đang hiển thị " + (numOfVisibleRows - 2).toString() + " dòng, ";
+
+      };
+      pager.find('li .prev_link').click(function () {
+        previous();
+        return false;
+      });
+      pager.find('li .next_link').click(function () {
+        next();
+        return false;
+      });
+
+      async function previous() {
+        var goToPage = parseInt(pager.data("curr")) - 1;
+        goTo(goToPage);
+      }
+
+      function next() {
+        goToPage = parseInt(pager.data("curr")) + 1;
+        goTo(goToPage);
+      }
+
+      function goTo(page) {
+        var startAt = page * perPage,
+          endOn = startAt + perPage;
+        // Added few lines from here start
+
+        $('.pg').hide();
+        $(".ell").remove();
+        var prevpg = $("#pg" + page).show();
+        var currpg = $("#pg" + (page + 1)).show();
+        var nextpg = $("#pg" + (page + 2)).show();
+        if (prevpg.length == 0) nextpg = $("#pg" + (page + 3)).show();
+        if (prevpg.length == 1 && nextpg.length == 0) {
+          prevpg = $("#pg" + (page - 1)).show();
+        }
+        $("#pg1").show()
+
+
+        if (page <= numPages - 3) {
+          $("#pg" + numPages.toString()).show();
+        }
+        currpg.addClass("active").siblings().removeClass("active");
+        // Added few lines till here end
+
+
+        children.css('display', 'none').slice(startAt, endOn).show();
+
+        if (page >= 1) {
+          pager.find('.prev_link').show();
+        } else {
+          pager.find('.prev_link').hide();
+        }
+
+        if (page < (numPages - 1)) {
+          pager.find('.next_link').show();
+        } else {
+          pager.find('.next_link').hide();
+        }
+
+        pager.data("curr", page);
+
+        pager.children().removeClass("active");
+        pager.children().eq(page + 1).addClass("active");
+
+        if (pager.find('li .page_link').click) {
+          ptu();
+        }
+        else {
+
+          console.log("elsee diablue");
+        }
+
+      }
+
+      hc = hc + 1
+
+
+      var numOfVisibleRows = $('tr').filter(function () {
+        return $(this).css('display') == 'table-row';
+      }).length;
+      str = "Đang hiển thị ";
+      document.getElementById("dong").innerHTML = str + (numOfVisibleRows - 2).toString() + " dòng, ";
+    };
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Focus - Bootstrap Admin Dashboard </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../../../static/focus-2/images/favicon.png">
+    <link rel="stylesheet" href="../../static/vendor/owl-carousel/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../../static/vendor/owl-carousel/css/owl.theme.default.min.css">
+    <link href="../../static/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
+    <link href="../../static/css/style.css" rel="stylesheet">
+    <link href="../../static/vendor/summernote/summernote.css" rel="stylesheet">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    
+
+    
+    <!-- include summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <a href="/" class="brand-logo">
+                <img class="brand-title" src="../../static/images/Cho.png" alt="">
+            </a>
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                        </div>
+
+                        <ul class="navbar-nav header-right" id="action">
+                            <li class="nav-item dropdown notification_dropdown">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown" @click="checed()">
+                                    <i class="mdi mdi-bell"></i>
+                                    <div class="" id="myDIV"></div>
+                                </a>
+
+
+
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <ul class="list-unstyled">
+
+                                        <li class="media " v-for="res in list_action " :key="res.Id" :id="res.name">
+                                            <span class="success"><i class="ti-user"></i></span>
+                                            <div class="media-body">
+                                                <a href="#">
+                                                    <p><strong>{{res.name}}</strong> đã
+                                                    </p>
+                                                    <span> {{res.do}} {{res.object}}</span>
+                                                </a>
+                                                <p class="notify-time">vào {{res.date}}</p>
+                                            </div>
+
+
+                                        </li>
+
+
+
+
+
+                                    </ul>
+
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown header-profile">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                                    <i class="mdi mdi-account"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="#" class="dropdown-item">
+                                        <i class="icon-user"></i>
+                                        <span class="ml-2">{[email]} </span>
+                                    </a>
+                                    <a href="/logout" class="dropdown-item">
+                                        <i class="icon-key"></i>
+                                        <span class="ml-2">Logout </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="quixnav">
+            <div class="quixnav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label first">Menu Chính</li>
+                    <li><a href="/">Trang chủ </a></li>
+                    {% if role=='Admin' or role=='Manager' %}
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-single-04"></i><span class="nav-text"> Quản lý User</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="/user">Tất cả user</a></li>
+                            <li><a href="/admin">Quản lý tài khoản các Admin</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if role=='Admin' or role=='Manager' or role=='Editor'  %}
+                    <li class="nav-label">Câu hỏi</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-app-store"></i><span class="nav-text">Quản Lý câu hỏi</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="/themques">Thêm câu hỏi</a></li>
+
+                            <li><a href="/cauhoi">Tất cả câu hỏi</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if role=='Admin' or role=='Manager' or role=='Editor'  %}
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-chart-bar-33"></i><span class="nav-text">Quản lý danh mục</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="/them_danhmuc">Thêm danh mục</a></li>
+
+                            <li><a href="/danhmuc">Tất cả danh mục</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+
+
+
+                </ul>
+            </div>
+
+
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <!-- row -->
+            <h1 class = "m-5" style="text-align: center;"> Sửa danh mục </h1>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <form  action="/sua_danhmuc" method="post">
+                            <div class="form-group">
+                                        <!-- <select class="form-control" aria-label="Default select example" id="id01" style="width: 250px;" onChange="update1()" name="Id_cate_dkt">
+                                            <option selected>Dạng kiến thức</option>
+                                            <option value="{[Id]}" w3-repeat="data"> {{Name}}</option>
+                                          <br>
+                                          </select> -->
+                                          <input type="hidden" name="Id2" id="" value="{[id]}">
+                                          <input type="hidden" name="Id1" id="" value="{[id1]}">
+                                          <br>
+                                      <label for="comment">Tên danh mục</label>
+                                      <textarea class="form-control" rows="2" name="dkt" value="" required="required">{[name]}</textarea>
+                                       </div>
+                                       <div class="form-group">
+                                        <label for="comment">Slug</label>
+                                        <textarea class="form-control" rows="2" name="slug">{[slug]}</textarea>
+                                         </div>
+                                    
+                                  <button type="submit" name="submit" class="btn btn-primary" value="sua_dkt">Submit</button>
+                           
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            
+            
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href="#" target="_blank">Quixkit</a> 2019</p>
+                <p>Distributed by <a href="https://themewagon.com/" target="_blank">Themewagon</a></p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="../../static/vendor/global/global.min.js"></script>
+    <script src="../../static/js/quixnav-init.js"></script>
+    <script src="../../static/js/custom.min.js"></script>
+
+
+    <!-- Vectormap -->
+    <script src="../../static/vendor/raphael/raphael.min.js"></script>
+    <script src="../../static/vendor/morris/morris.min.js"></script>
+
+
+    <script src="../../static/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="../../static/vendor/chart.js/Chart.bundle.min.js"></script>
+
+    <script src="../../static/vendor/gaugeJS/dist/gauge.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!--  flot-chart js -->
+    <script src="../../static/vendor/flot/jquery.flot.js"></script>
+    <script src="../../static/vendor/flot/jquery.flot.resize.js"></script>
+
+    <!-- Owl Carousel -->
+    <script src="../../static/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <script>
+        const fetchUsers = () => {
+        axios.get('/api/dkt')
+            .then(response => {
+                
+                const rest = response.data;
+                const key =Object.keys(rest);
+                console.log(rest)
+                console.log(`GET list users`, rest);
+
+                w3.displayObject("id01", rest);
+           
+            
+            })
+            .catch(error => console.error(error));
+    };
+
+    fetchUsers();
+    </script>
+    <script>
+        const fetchdmdvkt = () => {
+        axios.get('/api/dvkt')
+            .then(response => {
+                
+                const rest = response.data;
+                const key =Object.keys(rest);
+                console.log(rest)
+                console.log(`GET list users`, rest);
+
+                w3.displayObject("id02", rest);
+           
+            
+            })
+            .catch(error => console.error(error));
+    };
+
+    fetchdmdvkt();
+    </script>
+    <script> -->
+        <!-- const fetchmtct = () => {
+        axios.get('/api/mtct')
+            .then(response => {
+                
+                const rest = response.data;
+                const key =Object.keys(rest);
+                console.log(rest)
+                console.log(`GET list users`, rest);
+
+                w3.displayObject("id03", rest);
+           
+            
+            })
+            .catch(error => console.error(error));
+    }; -->
+
+    <!-- fetchmtct(); -->
+    </script>
+    <script language="JavaScript">
+        new Vue({
+          el: '#action',
+          data: {
+            list_action: [],
+            bien: 1,
+          },
+          methods: {
+            async ren_action() {
+              let str = "/api/action";
+    
+              try {
+                let res = await axios.get(str);
+                this.list_action = await res.data;
+                //console.log(res.data);
+                // this.checed()
+                bien = 1
+                this.re_load()
+    
+              } catch (err) {
+                console.log(err)
+              }
+            },
+            // thanh thông báo bấm vào là cập nhật lên viewer firesotre và tắt nút thông báo có id là myDIV
+            checed() {
+              var newData = JSON.parse(JSON.stringify(this.list_action));
+              var id = [];
+              for (i in newData) {
+                //console.log(newData[i].Id)
+                id.push(newData[i].Id);
+                console.log("//////////////////");
+                if (newData[i].viewer.includes("{[email]}") == true) {
+                  //console.log("hi")
+                } else {
+                  var element = document.getElementById("myDIV");
+                  element.classList.remove("pulse-css");
+                  let str = "/add_action/" + "{[email]}/" + id[i];
+                  axios.get(str);
+                  console.log("them thanh cong")
+                }
+              };
+            },
+            //Load trnag cho nút thông báo
+            re_load() {
+              var newData = JSON.parse(JSON.stringify(this.list_action));
+              for (i in newData) {
+                //console.log("//////////////////")
+                //console.log(newData[i].viewer)
+                if (newData[i].viewer.includes("{[email]}") == true) {
+                  //console.log("hi")
+                } else {
+                  var element = document.getElementById("myDIV");
+                  element.classList.add("pulse-css");
+                }
+              };
+            },
+          },
+          created() {
+            this.ren_action();
+          },
+        });
+      </script>
+    <!-- Counter Up -->
+    <script src="../../static/vendor/jqvmap/js/jquery.vmap.min.js"></script>
+    <script src="../../static/vendor/jqvmap/js/jquery.vmap.usa.js"></script>
+    <script src="../../static/vendor/jquery.counterup/jquery.counterup.min.js"></script>
+
+
+    <script src="../../static/js/dashboard/dashboard-1.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    
+
+     <script src="../../static/vendor/summernote/js/summernote.min.js"></script>
+     <!-- Summernote init -->
+     <script src="../../static/js/plugins-init/summernote-init.js"></script>
+    
+</body>
+
+</html>

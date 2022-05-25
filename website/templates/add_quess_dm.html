@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Focus - Bootstrap Admin Dashboard </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/focus-2/images/favicon.png">
+    <link rel="stylesheet" href="../static/vendor/owl-carousel/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../static/vendor/owl-carousel/css/owl.theme.default.min.css">
+    <link href="../static/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
+    <link href="../static/css/style.css" rel="stylesheet">
+    <link href="../static/vendor/summernote/summernote.css" rel="stylesheet">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    
+
+    
+    <!-- include summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <style>
+        .form-control:disabled{
+            background-color:rgb(175, 175, 175);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <a href="/" class="brand-logo">
+                <img class="brand-title" src="../static/images/Cho.png" alt="">
+            </a>
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+     
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                        </div>
+
+                        <ul class="navbar-nav header-right" id="action">
+                            <li class="nav-item dropdown notification_dropdown">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown" @click="checed()">
+                                    <i class="mdi mdi-bell"></i>
+                                    <div class="" id="myDIV"></div>
+                                </a>
+
+
+
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <ul class="list-unstyled">
+
+                                        <li class="media " v-for="res in list_action " :key="res.Id" :id="res.name">
+                                            <span class="success"><i class="ti-user"></i></span>
+                                            <div class="media-body">
+                                                <a href="#">
+                                                    <p><strong>{{res.name}}</strong> đã
+                                                    </p>
+                                                    <span> {{res.do}} {{res.object}}</span>
+                                                </a>
+                                                <p class="notify-time">vào {{res.date}}</p>
+                                            </div>
+
+
+                                        </li>
+
+
+
+
+
+                                    </ul>
+
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown header-profile">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                                    <i class="mdi mdi-account"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="#" class="dropdown-item">
+                                        <i class="icon-user"></i>
+                                        <span class="ml-2">{[email]} </span>
+                                    </a>
+                                    <a href="/logout" class="dropdown-item">
+                                        <i class="icon-key"></i>
+                                        <span class="ml-2">Logout </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="quixnav">
+            <div class="quixnav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label first">Menu Chính</li>
+                    <li><a href="/">Trang chủ </a></li>
+                    {% if role=='Admin' or role=='Manager' %}
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-single-04"></i><span class="nav-text"> Quản lý User</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="/user">Tất cả user</a></li>
+                            <li><a href="/admin">Quản lý tài khoản các Admin</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if role=='Admin' or role=='Manager' or role=='Editor' %}
+                    <li class="nav-label">Câu hỏi</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-app-store"></i><span class="nav-text">Quản Lý câu hỏi</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="/themques">Thêm câu hỏi</a></li>
+
+                            <li><a href="/cauhoi">Tất cả câu hỏi</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if role=='Admin' or role=='Manager' or role=='Editor' %}
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-chart-bar-33"></i><span class="nav-text">Quản lý danh mục</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="/them_danhmuc">Thêm danh mục</a></li>
+
+                            <li><a href="/danhmuc">Tất cả danh mục</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+
+
+
+                </ul>
+            </div>
+
+
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <!-- row -->
+            <h1 class = "m-5" style="text-align: center;"> Thêm câu hỏi </h1>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <form  action="/form" method="post" name="myForm" onsubmit="return validateForm()">
+                            <div class="form-group">
+            
+                                <h5 class = "m-5" style="text-align: center;display: none;" id="id_quiz1">{[name]}</h5>
+                                <p class = "m-5" style="text-align: center;" id="taitau"></p>
+                                <h5 id="ho1" style="display: none;">{[Id_cate_dkt]}</h5>
+                                <h5 id="ho2" style="display: none;">{[Id_cate_dvkt]}</h5>
+                                <h5 id="ho3" style="display: none;">{[Id_cate_mtct]}</h5>
+                                                    
+                                </div>
+                                  <div class="form-group">
+                                 
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">Dạng kiến thức</th>
+                                            <th scope="col">Đơn vị kiến thức</th>
+                                            <th scope="col">Mô tả chi tiết</th>
+                                            <th scope="col">Mức độ khó</th>
+                                          </tr> 
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <th scope="row"><select class="form-control" aria-label="Default select example" id="id01" style="width: 250px;" onChange="update1()" name="Id_cate_dkt">
+                                      
+                                                <option selected>Dạng kiến thức</option>
+                                            
+                                               
+                                                <option value="{{Id}}" w3-repeat="data" id="select_{{Id}}"> {{Name}}</option>
+                                                <br>
+                                                </select>
+                                            </th>
+                                            <td>  
+                                                <select class="form-control" aria-label="Default select example" id="id02" style="width: 250px;" onChange="update2()" disabled name="Id_cate_dvkt">
+                                                <br>
+                                                <option  selected>Đơn vị kiến thức </option>
+                                             
+
+                                                <option value="{{Id}}" w3-repeat="data" id="select1_{{Id}}"> {{Name}}</option>
+                                  
+                                                </select>
+                                            </td>
+                                            <td><select class="form-control" aria-label="Default select example" id="id03" style="width: 250px;" disabled name="Id_cate_mtct">
+                                                <option selected>Mô tả chi tiết </option>
+                    
+                                                <option value="{{Id}}" w3-repeat="data" id="select2_{{Id}}"> {{Name}}</option>
+                                              
+                                              </select></td>
+                                            <td><select class="form-control" aria-label="Default select example"  style="width: 250px;"  name="level">
+                                                <option selected>Độ khó</option>
+                                                <option  selected value="{[level]}">{[level]} </option>
+
+                                                <option value="1"  >1</option>
+                                                <option value="2"  >2</option>
+                                                <option value="3"  > 3</option>
+                                                <option value="4"  > 4</option>
+                                                <option value="5"  > 5</option>
+                                            
+                                            </select></td>
+                                          </tr>
+                                        </tbody>
+                                    </table>
+                                    <label for="exampleInputQuestion1">Question</label>
+                                    <div class="card-body">
+                                        <textarea id="summernote" name="question"  >{[name_Question]}</textarea>
+                                        
+                                    </div>
+                                  </div>
+                                  
+                                  <hr>
+                                  <h1>Answer</h1>
+                                  <div class="form-row">
+                                      <!-- 1 cau tra loi -->
+                                      <div class="form-group  col-md-12 form-check">
+                                          <label for="inputAnswer1">Answer 1</label>
+                                          <br>
+                                          <input style="display:none;" name="id" value="{[name]}" type="hidden">
+                                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="answer1">
+                                          <textarea id="summernote1" name="answer1"  ></textarea>
+                                         
+                                      </div>
+                                      <!-- het 1 cau tra loi -->
+                                      <!-- 1 cau tra loi -->
+                                      <div class="form-group  col-md-12 form-check">
+                                          <label for="inputAnswer2">Answer 2</label>
+                                          <br>
+                                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="answer2">
+                                          <textarea id="summernote2" name="answer2" ></textarea>
+                                      </div>
+                                      <!-- het 1 cau tra loi -->
+                                      <!-- 1 cau tra loi -->
+                                      <div class="form-group  col-md-12 form-check">
+                                          <label for="inputAnswer3">Answer 3</label>
+                                          <br>
+                                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" value="answer3">
+                                          <textarea id="summernote3" name="answer3"  ></textarea>
+                                      </div>
+                                      <!-- het 1 cau tra loi -->
+                                      <!-- 1 cau tra loi -->
+                                      <div class="form-group  col-md-12 form-check">
+                                          <label for="inputAnswer4">Answer 4</label>
+                                          <br>
+                                          <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" value="answer4">
+                                          <textarea id="summernote4" name="answer4" ></textarea>
+                                      </div>
+                                      <!-- het 1 cau tra loi -->
+                                      <small class="form-text text-muted">Không được nhập A,B,C,D vào nhá, chỉ cần nhập chữ vào rồi chọn radio button là đc</small>
+                                    </div>
+                              
+                                    <div class="form-group ">
+                                      <label for="comment">Slug</label>
+                                      <textarea class="form-control" rows="2" name="slug" > {[slug]}</textarea>
+                                      <small class="form-text text-muted">Nhập cái tên file vào ấy, ví dụ: "30 Bài tập giao tiếp - Cô Hương Fiona"</small>
+                                    </div>
+                                    
+                                  <button type="submit" name="submit" class="btn btn-primary" value="add">Them</button>
+                           
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href="#" target="_blank">Quixkit</a> 2019</p>
+                <p>Distributed by <a href="https://themewagon.com/" target="_blank">Themewagon</a></p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+    </div>
+    <script src="../static/vendor/global/global.min.js"></script>
+    <script src="../static/js/quixnav-init.js"></script>
+    <script src="../static/js/custom.min.js"></script>
+    <script src="../static/vendor/global/global.min.js"></script>
+    <script src="../static/js/quixnav-init.js"></script>
+    <script src="../static/js/custom.min.js"></script>
+
+    <script src="../static/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../static/js/plugins-init/datatables.init.js"></script>
+
+
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Vectormap -->
+    <script src="../static/vendor/raphael/raphael.min.js"></script>
+    <script src="../static/vendor/morris/morris.min.js"></script>
+
+
+    <script src="../static/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="../static/vendor/chart.js/Chart.bundle.min.js"></script>
+
+    <script src="../static/vendor/gaugeJS/dist/gauge.min.js"></script>
+
+    <!--  flot-chart js -->
+    <script src="../static/vendor/flot/jquery.flot.js"></script>
+    <script src="../static/vendor/flot/jquery.flot.resize.js"></script>
+
+    <!-- Owl Carousel -->
+    <script src="../static/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+
+    <!-- Counter Up -->
+    <script src="../static/vendor/jqvmap/js/jquery.vmap.min.js"></script>
+    <script src="../static/vendor/jqvmap/js/jquery.vmap.usa.js"></script>
+    <script src="../static/vendor/jquery.counterup/jquery.counterup.min.js"></script>
+
+
+    <script src="../static/js/dashboard/dashboard-1.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   
+     <script src="../static/vendor/summernote/js/summernote.min.js"></script>
+     <!-- Summernote init -->
+     <script src="../static/js/plugins-init/summernote-init.js"></script>
+    
+<script>
+    function validateForm() {
+  let x = document.forms["myForm"]["question"].value;
+  let ans1 = document.forms["myForm"]["answer1"].value;
+  let ans2 = document.forms["myForm"]["answer2"].value;
+  let ans3 = document.forms["myForm"]["answer3"].value;
+  let ans4 = document.forms["myForm"]["answer4"].value;
+  console.log(ans1);
+  if (x == "") {
+    alert("Điền câu hỏi");
+    return false;
+  }
+  
+  if (ans1 == "") {
+    alert("điền đáp án 1");
+    return false;
+  }
+  if (ans2 == "") {
+    alert("điền đáp án 2");
+    return false;
+  }
+  if (ans3 == "") {
+    alert("điền đáp án 3");
+    return false;
+  }
+   if (ans4 == "") {
+    alert("điền đáp án 4");
+    return false;
+  }
+}
+</script>
+
+    <!-- Datatable -->
+  
+ 
+
+
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var x = document.getElementById("id_quiz1").innerText;
+        //console.log(x);
+
+        let str ="/api/ques1/"+x;
+        let ans1=[];
+        const fetchUsers = () => {
+        axios.get(str)
+            .then(response => {
+                
+                const rest = response.data;
+               
+               
+                    //console.log(`GET list users1111111111111111111111`, rest);
+                    var newData = JSON.parse(JSON.stringify(rest));
+
+                    console.log('taiataiataitaitaitaitiatiatiat',newData[0].Id);
+                    let a = newData[0].Id;
+                    
+                    document.getElementById("taitau").value = a;
+
+
+                    //console.log(newData[0].True_ans);
+                    for (i in newData[0].Option_ans){
+                        ans1[i] = newData[0].Option_ans[i];
+                        //console.log(newData[0].Option_ans[i])
+
+                       // document.getElementById("hihi").innerHTML = newData[0].Option_ans[i];
+
+                    };
+                    
+                    //console.log(`GET list users1111111111111111111111`,ans1);
+                    $('#summernote1').summernote('code', ans1[0]);
+                    //document.getElementById("summernote1").value = ans1[0];
+                    if (newData[0].True_ans==ans1[0]){
+                        document.getElementById("flexRadioDefault1").checked = true;
+                    };
+                    $('#summernote2').summernote('code', ans1[1]);
+                    //document.getElementById("summernote2").value = ans1[1];
+                    if (newData[0].True_ans==ans1[1]){
+                        document.getElementById("flexRadioDefault2").checked = true;
+                    };
+                    $('#summernote3').summernote('code', ans1[2]);
+                    //document.getElementById("summernote3").value = ans1[2];
+                    if (newData[0].True_ans==ans1[2]){
+                        document.getElementById("flexRadioDefault3").checked = true;
+                    };
+                    $('#summernote4').summernote('code', ans1[3]);
+                    //document.getElementById("summernote4").value = ans1[3];
+                    if (newData[0].True_ans==ans1[3]){
+                        document.getElementById("flexRadioDefault4").checked = true;
+                    };
+                
+           
+               
+           
+            
+            })
+            .catch(error => console.error(error));
+           
+    }; 
+
+    fetchUsers();
+    </script>
+    <script>
+        function update2() {
+        document.getElementById("id03").disabled = false;
+                    var select = document.getElementById('id02');
+                    var option = select.options[select.selectedIndex].value;
+                    //console.log(option);
+                    let str ="/api/mtct/"+option;
+                    //console.log(str);
+        
+                axios.get(str)
+                    .then(response => {
+                        const rest = response.data;
+                       
+        
+                        w3.displayObject("id03", rest);
+                        var x = document.getElementById("ho3").innerText;
+                        console.log('tutututtutututututtu',x)
+                        var options = document.getElementById('id03').options;
+                        for (let i = 0; i < options.length; i++) { 
+                            console.log(options[i].value);//log the value
+                            if (x==options[i].value){
+                                options[i].select==true;
+                                let text1 = "select2_";
+                                let text2 =options[i].value;
+                                let result = text1.concat(text2);
+                                document.getElementById(result).selected = "true";
+                            };
+                        }
+                        
+        
+                    })
+                    .catch(error => console.error(error));
+        
+        }
+        
+        function update1() {
+        document.getElementById("id03").disabled = true;
+        document.getElementById("id02").disabled = false;
+                    var select = document.getElementById('id01');
+                    var option = select.options[select.selectedIndex].value;
+                    //console.log(option);
+                    let str ="/api/dvkt/"+option;
+                    //console.log(str);
+        
+                axios.get(str)
+                    .then(response => {
+                        const rest = response.data;
+                     
+                        
+        
+                        w3.displayObject("id02", rest);
+                        //w3.displayObject("id02", rest);
+                        var x = document.getElementById("ho2").innerText;
+                        //console.log(x)
+                        var options = document.getElementById('id02').options;
+                        for (let i = 0; i < options.length; i++) { 
+                            console.log(options[i].value);//log the value
+                            if (x==options[i].value){
+                                options[i].select==true;
+                                let text1 = "select1_";
+                                let text2 =options[i].value;
+                                let result = text1.concat(text2);
+                                document.getElementById(result).selected = "true";
+                            };
+                        }
+                        update2();
+                    })
+                    .catch(error => console.error(error));
+        
+        }
+        
+               
+        
+            </script>
+             <script>
+
+                const fetchUsers1 = () => {
+                axios.get('/api/dkt')
+                    .then(response => {
+                        const rest = response.data;
+                        
+        
+                        
+        
+                        
+                        //console.log("hihihihihih",rest);
+                        w3.displayObject("id01", rest);
+
+                        var x = document.getElementById("ho1").innerText;
+                        //console.log(x)
+                        var options = document.getElementById('id01').options;
+                        for (let i = 0; i < options.length; i++) { 
+                            //console.log(options[i].value);//log the value
+                            if (x==options[i].value){
+                                options[i].select==true;
+                                let text1 = "select_";
+                                let text2 =options[i].value;
+                                let result = text1.concat(text2);
+                                document.getElementById(result).selected = "true";
+                            };
+                        }
+                        update1();
+                   
+                       
+                   
+                    
+                    })
+                    .catch(error => console.error(error));
+            };
+        
+            fetchUsers1();
+            </script>
+             <script>
+              
+            </script>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!--  vendors -->
+   
+
+    <script src="../static/js/quixnav-init.js"></script>
+    <script src="../static/js/custom.min.js"></script>
+
+
+    <!-- Vectormap -->
+    <script src="../static/vendor/raphael/raphael.min.js"></script>
+    <script src="../static/vendor/morris/morris.min.js"></script>
+
+
+    <script src="../static/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="../static/vendor/chart.js/Chart.bundle.min.js"></script>
+
+    <script src="../static/vendor/gaugeJS/dist/gauge.min.js"></script>
+
+    <!--  flot-chart js -->
+    <script src="../static/vendor/flot/jquery.flot.js"></script>
+    <script src="../static/vendor/flot/jquery.flot.resize.js"></script>
+
+    <!-- Owl Carousel -->
+    <script src="../static/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+
+    <!-- Counter Up -->
+    <script src="../static/vendor/jqvmap/js/jquery.vmap.min.js"></script>
+    <script src="../static/vendor/jqvmap/js/jquery.vmap.usa.js"></script>
+    <script src="../static/vendor/jquery.counterup/jquery.counterup.min.js"></script>
+
+
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   
+     <script src="../static/vendor/summernote/js/summernote.min.js"></script>
+     <!-- Summernote init -->
+     <script src="../static/js/plugins-init/summernote-init.js"></script>
+
+     
+     <script>
+        $('#summernote').summernote({
+          tabsize: 2,
+          height: 150
+          
+        });
+        $('#summernote1').summernote({
+          tabsize: 2,
+          height: 150
+          
+        });
+        $('#summernote2').summernote({
+          tabsize: 2,
+          height: 150
+          
+        });
+        $('#summernote3').summernote({
+          tabsize: 2,
+          height: 150
+          
+        });
+        $('#summernote4').summernote({
+          tabsize: 2,
+          height: 150
+          
+        });
+      </script>
+       
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script language="JavaScript">
+   new Vue({
+       el: '#action',
+       data: {
+           list_action: [],
+           bien: 1,
+       },
+       methods: {
+           async ren_action() {
+               let str = "/api/action";
+
+               try {
+                   let res = await axios.get(str);
+                   this.list_action = await res.data;
+                   //console.log(res.data);
+                   // this.checed()
+                   bien = 1
+                   this.re_load()
+
+               } catch (err) {
+                   console.log(err)
+               }
+           },
+           // thanh thông báo bấm vào là cập nhật lên viewer firesotre và tắt nút thông báo có id là myDIV
+           checed() {
+               var newData = JSON.parse(JSON.stringify(this.list_action));
+               var id = [];
+               for (i in newData) {
+                   console.log(newData[i].Id)
+                   id.push(newData[i].Id);
+                   console.log("//////////////////")
+
+                   
+
+                   if (newData[i].viewer.includes("{[email]}") == true) {
+                       console.log("hi")
+                   } else {
+                       var element = document.getElementById("myDIV");
+                       element.classList.remove("pulse-css");
+                       let str = "/add_action/" + "{[email]}/" + id[i];
+                       axios.get(str);
+                       console.log("them thanh cong")
+                   }
+               };
+           },
+           //Load trnag cho nút thông báo
+           re_load() {
+               var newData = JSON.parse(JSON.stringify(this.list_action));
+               for (i in newData) {
+                   console.log("//////////////////")
+                   console.log(newData[i].viewer)
+                   if (newData[i].viewer.includes("{[email]}") == true) {
+                       console.log("hi")
+                   } else {
+                       var element = document.getElementById("myDIV");
+                       element.classList.add("pulse-css");
+                   }
+               };
+           },
+       },
+       created() {
+           this.ren_action();
+       },
+   });
+</script>
+     
+</body>
+
+</html>

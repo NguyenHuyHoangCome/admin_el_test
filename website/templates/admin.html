@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Focus - Bootstrap Admin Dashboard </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/focus-2/images/favicon.png">
+    <link rel="stylesheet" href="../static/vendor/owl-carousel/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="../static/vendor/owl-carousel/css/owl.theme.default.min.css">
+    <link href="../static/vendor/jqvmap/css/jqvmap.min.css" rel="stylesheet">
+    <link href="../static/css/style.css" rel="stylesheet">
+    <link href="../static/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+
+
+
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <a href="/" class="brand-logo">
+                <img class="brand-title" src="../static/images/Cho.png" alt="">
+            </a>
+
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                        </div>
+
+                        <ul class="navbar-nav header-right" id="action">
+                            <li class="nav-item dropdown notification_dropdown">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown" @click="checed()">
+                                    <i class="mdi mdi-bell"></i>
+                                    <div class="" id="myDIV"></div>
+                                </a>
+
+
+
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <ul class="list-unstyled">
+
+                                        <li class="media " v-for="res in list_action " :key="res.Id" :id="res.name">
+                                            <span class="success"><i class="ti-user"></i></span>
+                                            <div class="media-body">
+                                                <a href="#">
+                                                    <p><strong>{{res.name}}</strong> đã
+                                                    </p>
+                                                    <span> {{res.do}} {{res.object}}</span>
+                                                </a>
+                                                <p class="notify-time">vào {{res.date}}</p>
+                                            </div>
+
+
+                                        </li>
+
+
+
+
+
+                                    </ul>
+
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown header-profile">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                                    <i class="mdi mdi-account"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="#" class="dropdown-item">
+                                        <i class="icon-user"></i>
+                                        <span class="ml-2">{[email]} </span>
+                                    </a>
+                                    <a href="/logout" class="dropdown-item">
+                                        <i class="icon-key"></i>
+                                        <span class="ml-2">Logout </span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="quixnav">
+            <div class="quixnav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label first">Menu Chính</li>
+                    <li><a href="/">Trang chủ </a></li>
+                    {% if role=='Admin' or role=='Manager' %}
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-single-04"></i><span class="nav-text"> Quản lý User</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="/user">Tất cả user</a></li>
+                            <li><a href="/admin">Quản lý tài khoản các Admin</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if role=='Admin' or role=='Manager' or role=='Editor' %}
+                    <li class="nav-label">Câu hỏi</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-app-store"></i><span class="nav-text">Quản Lý câu hỏi</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="/themques">Thêm câu hỏi</a></li>
+
+                            <li><a href="/cauhoi">Tất cả câu hỏi</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% if role=='Admin' or role=='Manager' or role=='Editor' %}
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-chart-bar-33"></i><span class="nav-text">Quản lý danh mục</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="/them_danhmuc">Thêm danh mục</a></li>
+
+                            <li><a href="/danhmuc">Tất cả danh mục</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+
+
+
+                </ul>
+            </div>
+
+
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body" id="app">
+            <!-- row -->
+            <div class="container-fluid">
+                <div class="row">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="col-12">
+
+                        <div class="alert alert-{[ category ]} solid alert-right-icon alert-dismissible fade show">
+                            <span><i class="mdi mdi-check"></i></span>
+                            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close"><span><i
+                                        class="mdi mdi-close"></i></span>
+                            </button> {[ message ]}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title"> Tất cả người dùng</h4>
+                                <a href="/register" class="btn btn-success">Thêm tài khoản trang quản lý</a>
+                            </div>
+                            <div class="card-body">
+                                <div s="" class="row">
+                                    <div class="col-sm-8">
+                                        <h5>Chọn số dòng hiển thị: </h5> <select
+                                            aria-label="Default select example" id="select_et" class="form-control"
+                                            @change="onChange4($event)" style="width: 100px;">
+                                            <option value="5"> 05</option>
+                                            <option value="10"> 10</option>
+                                            <option value="20"> 20</option>
+                                            <option value="50"> 50</option>
+                                            <option value="100"> 100</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4"><input v-model="searchQuery" id="search_ver1"
+                                            v-on:keyup="change_data(this)" type="text" placeholder="Tìm kiếm theo Email"
+                                            class="form-control input-default "><br>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped " style="min-width: 845px; color: black; ">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>UId</th>
+                                                <th>Email</th>
+                                                <th>Tên</th>
+                                                <th>Chức vụ</th>
+                                                <th style="text-align: center;">Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="myTable">
+                                            <tr v-for="(user,index) in resultQuery" :key="user.Uid">
+                                                <td>{{index+1}}</td>
+                                                <td>{{user.Uid}}</td>
+                                                <td>{{user.Email}}</td>
+                                                <td>{{user.Name}}</td>
+                                                <td>{{user.Role}}</td>
+                                                <td style="text-align: end;"><button type="button"
+                                                        class="btn btn-rounded btn-outline-success" data-toggle="modal"
+                                                        data-target=".bd-example-modal-lg"
+                                                        @click="() => getid(user)">Chi tiết</button>
+                                                    <a class="btn btn-rounded btn-outline-danger"
+                                                        :href="'/delete/user/' + user.Uid">Xóa tài khoản</a>
+                                                    <a class="btn btn-rounded btn-outline-warning"
+                                                        :href="'/delete/user/chucvu/' + user.Uid">Xóa Chức vụ</a>
+                                                </td>
+                                            </tr>
+
+                                        <tfoot>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>UId</th>
+                                                <th>Email</th>
+                                                <th>Tên</th>
+                                                <th>Chức vụ</th>
+                                                <th style="text-align: center;">Hành động</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                    <hr>
+                                    <span id="dong"> </span><span>trong
+                                        tổng: {{tong}} câu hỏi </span>
+                                    <div class="col-md-12 text-center">
+
+                                        <ul class="pagination" id="myPager">
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <!-- v-if="one_user" -->
+                            <div class="modal-header">
+                                <h5 class="modal-title">Chi tiết </h5>
+                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" v-for="user1 in one_user" :key="user1.Uid">
+                                <h5>Id: {{ user1.Uid }}</h5>
+                                <!-- <p>Chưa có profile user tạo từ app</p> -->
+                                <div class="card text-white bg-dark">
+                                    <div class="card-header">
+
+                                        <div class="profile-photo">
+                                            <img :src="user1.Avatar" class="img-fluid rounded-circle"
+                                                style="width:100px" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="card-body mb-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-responsive-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Thông tin</th>
+                                                        <th>Chi tiết</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Email</th>
+                                                        <td>{{ user1.Email }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <td>{{ user1.Name }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Age</th>
+                                                        <td>{{ user1.Age }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Role</th>
+                                                        <td>{{ user1.Role }}</td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="card-footer bg-transparent border-0">Last updateed 3 min ago
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="justify-content: space-between;">
+                                <a id="linkchuyentrang" href="" type="button" class="btn btn-warning">Update</a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+
+
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href="#" target="_blank">Quixkit</a> 2019</p>
+                <p>Distributed by <a href="https://themewagon.com/" target="_blank">Themewagon</a></p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="../static/vendor/global/global.min.js"></script>
+    <script src="../static/js/quixnav-init.js"></script>
+    <script src="../static/js/custom.min.js"></script>
+
+
+    <!-- Vectormap -->
+    <script src="../static/vendor/raphael/raphael.min.js"></script>
+    <script src="../static/vendor/morris/morris.min.js"></script>
+
+
+    <script src="../static/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="../static/vendor/chart.js/Chart.bundle.min.js"></script>
+
+    <script src="../static/vendor/gaugeJS/dist/gauge.min.js"></script>
+
+    <!--  flot-chart js -->
+    <script src="../static/vendor/flot/jquery.flot.js"></script>
+    <script src="../static/vendor/flot/jquery.flot.resize.js"></script>
+
+    <!-- Owl Carousel -->
+    <script src="../static/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+
+    <!-- Counter Up -->
+    <script src="../static/vendor/jqvmap/js/jquery.vmap.min.js"></script>
+    <script src="../static/vendor/jqvmap/js/jquery.vmap.usa.js"></script>
+    <script src="../static/vendor/jquery.counterup/jquery.counterup.min.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="../static/js/dashboard/dashboard-1.js"></script>
+    <script src="../static/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../static/js/plugins-init/datatables.init.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <script language="JavaScript">
+        var list_loc = [];
+        var app = new Vue({
+            el: '#app',
+            data: {
+                list_user: [],
+                searchQuery: null,
+                one_user: null,
+                tong: '',
+                phan_tu: '',
+
+            },
+            methods: {
+                getid: function (he) {
+                    console.log(he.Uid);
+                    document.getElementById("linkchuyentrang").href = 'update/user/' + he.Uid;
+                    this.getUserDetail(he.Uid);
+
+                },
+                async getUser() {
+                    try {
+                        let res = await axios.get('/api/admin')
+                        this.list_user = res.data;
+                        await this.load_trang();
+                        this.tong = Object.keys(res.data).length;
+                        // console.log('tong', this.tong)
+                        var numOfVisibleRows = document.getElementById("select_et").value;
+                        // console.log(numOfVisibleRows)
+                        this.phan_tu = numOfVisibleRows;
+                    } catch (err) {
+                        console.log(err)
+                    }
+                },
+                async getUserDetail(id) {
+                    try {
+                        let res = await axios.get('/api/user/' + id)
+                        this.one_user = await res.data;
+                    } catch (err) {
+                        console.log(err)
+
+                    }
+                },
+                async onChange4(event) {
+
+                    var et = document.getElementById("select_et").value;
+
+
+                    await $('#myTable').pageMe({
+                        pagerSelector: '#myPager',
+                        showPrevNext: true,
+                        hidePageNumbers: false,
+                        perPage: parseInt(et),
+                    }), numOfVisibleRows = $('tr').filter(function () {
+                        return $(this).css('display') == 'table-row';
+                    }).length;
+                    this.phan_tu = numOfVisibleRows - 2;
+                },
+                async load_trang() {
+                    var et = document.getElementById("select_et").value;
+                    var numOfVisibleRows = 0;
+                    // console.log(typeof (et));
+                    await setTimeout(function () {
+
+
+                        $('#myTable').pageMe({
+
+                            pagerSelector: '#myPager',
+                            showPrevNext: true,
+                            hidePageNumbers: false,
+                            perPage: parseInt(et),
+
+                        });
+
+                    }, 0);
+
+                },
+                async change_data(e) {
+                    // console.log(e);
+
+                    console.log("dâdada");
+                    var et = document.getElementById("select_et").value;
+                    //console.log(et);
+                    //console.log(typeof(et));
+                    await setTimeout(function () {
+
+
+                        $('#myTable').pageMe({
+
+                            pagerSelector: '#myPager',
+                            showPrevNext: true,
+                            hidePageNumbers: false,
+                            perPage: parseInt(et),
+
+                        });
+
+                    }, 0);
+                    var numOfVisibleRows = $('tr').filter(function () {
+                        return $(this).css('display') == 'table-row';
+                    }).length;
+                    // console.log(numOfVisibleRows)
+                    // console.log(numOfVisibleRows)
+                    this.phan_tu = numOfVisibleRows - 2;
+
+                }
+            },
+            created() {
+                this.getUser();
+                // this.cleanques();
+
+            },
+            computed: {
+                resultQuery() {
+                    if (this.searchQuery) {
+                        list_loc = this.list_user.filter((item) => {
+                            return this.searchQuery.toLowerCase().split(' ').every(v => item.Email.toLowerCase().includes(v))
+                        });
+                        this.tong = Object.keys(list_loc).length;
+                        // console.log(this.tong)
+                        return this.list_user.filter((item) => {
+                            return this.searchQuery.toLowerCase().split(' ').every(v => item.Email.toLowerCase().includes(v))
+                        })
+                    } else {
+                        this.tong = Object.keys(this.list_user).length;
+                        return this.list_user;
+                    };
+                }
+
+            },
+        });
+
+    </script>
+      <script language="JavaScript">
+        new Vue({
+            el: '#action',
+            data: {
+                list_action: [],
+                bien: 1,
+            },
+            methods: {
+                async ren_action() {
+                    let str = "/api/action";
+
+                    try {
+                        let res = await axios.get(str);
+                        this.list_action = await res.data;
+                        //console.log(res.data);
+                        // this.checed()
+                        bien = 1
+                        this.re_load()
+
+                    } catch (err) {
+                        console.log(err)
+                    }
+                },
+                // thanh thông báo bấm vào là cập nhật lên viewer firesotre và tắt nút thông báo có id là myDIV
+                checed() {
+                    var newData = JSON.parse(JSON.stringify(this.list_action));
+                    var id = [];
+                    for (i in newData) {
+                  
+                        id.push(newData[i].Id);
+                
+                        if (newData[i].viewer.includes("{[email]}") == true) {
+       
+                        } else {
+                            var element = document.getElementById("myDIV");
+                            element.classList.remove("pulse-css");
+                            let str = "/add_action/" + "{[email]}/" + id[i];
+                            axios.get(str);
+           
+                        }
+                    };
+                },
+                //Load trnag cho nút thông báo
+                re_load() {
+                    var newData = JSON.parse(JSON.stringify(this.list_action));
+                    for (i in newData) {
+        
+               
+                        if (newData[i].viewer.includes("{[email]}") == true) {
+                       
+                        } else {
+                            var element = document.getElementById("myDIV");
+                            element.classList.add("pulse-css");
+                        }
+                    };
+                },
+            },
+            created() {
+                this.ren_action();
+            },
+        });
+    </script>
+    <script>
+        var hc = 0;
+        $.fn.pageMe = function (opts) {
+
+
+
+            $("li").remove(".page-item");
+            var et = document.getElementById("select_et").value;
+            var $this = this,
+                defaults = {
+                    perPage: parseInt(et),
+                    showPrevNext: false,
+                    hidePageNumbers: false
+                },
+                settings = $.extend(defaults, opts);
+
+            var listElement = $this;
+            var perPage = settings.perPage;
+            //console.log("perpage",settings.perPage)
+
+            var children = listElement.children();
+            var pager = $('.pager');
+
+            //console.log("pager",pager);
+            if (typeof settings.childSelector != "undefined") {
+                children = listElement.find(settings.childSelector);
+            }
+
+            if (typeof settings.pagerSelector != "undefined") {
+                pager = $(settings.pagerSelector);
+            }
+
+            var numItems = children.size();
+
+            var numPages = Math.ceil(numItems / perPage);
+
+            pager.data("curr", 0);
+            var curr = 0;
+
+            if (settings.showPrevNext) {
+
+                $('<li id="prev" class="page-item"><a  class="prev_link  page-link">«</a></li>').appendTo(pager);
+
+            }
+
+
+            // Added class and id in li start
+            while (numPages > curr && (settings.hidePageNumbers == false)) {
+
+
+                $('<li id="pg' + (curr + 1) + '" class="page-item num_page"><a href="#" class="page_link page-link">' + (
+                    curr + 1) + '</a></li>').appendTo(pager);
+
+                curr++;
+
+            }
+
+            // Added class and id in li end
+
+            if (settings.showPrevNext) {
+
+                $('<li id="next" class="page-item"><a href="#" class="next_link page-link">»</a></li>').appendTo(pager);
+
+            }
+
+            pager.find('.page_link:first').addClass('active');
+            pager.find('.prev_link').hide();
+            if (numPages <= 1) {
+                pager.find('.next_link').hide();
+            }
+            pager.children().eq(1).addClass("active");
+
+            children.hide();
+            children.slice(0, perPage).show();
+            if (numPages > 3) {
+                $('.pg').hide();
+                $('#pg1,#pg2,#pg3').show();
+
+            }
+            function ptu() {
+
+                var numOfVisibleRows = $('tr').filter(function () {
+                    return $(this).css('display') == 'table-row';
+                }).length;
+                console.log("num funtion ptu", numOfVisibleRows, typeof (numOfVisibleRows));
+                document.getElementById("dong").innerHTML = "Đang hiển thị " + (numOfVisibleRows - 2).toString() + " dòng, ";
+
+            };
+            pager.find('li .page_link').click(function () {
+                var clickedPage = $(this).html().valueOf() - 1;
+                goTo(clickedPage, perPage);
+                return false;
+            });
+            pager.find('li .prev_link').click(function () {
+                previous();
+                return false;
+            });
+            pager.find('li .next_link').click(function () {
+                next();
+                return false;
+            });
+
+            function previous() {
+                var goToPage = parseInt(pager.data("curr")) - 1;
+                goTo(goToPage);
+            }
+
+            function next() {
+                goToPage = parseInt(pager.data("curr")) + 1;
+                goTo(goToPage);
+            }
+
+            function goTo(page) {
+                var startAt = page * perPage,
+                    endOn = startAt + perPage;
+
+                // Added few lines from here start
+
+                $('.pg').hide();
+                $(".ell").remove();
+                var prevpg = $("#pg" + page).show();
+                var currpg = $("#pg" + (page + 1)).show();
+                var nextpg = $("#pg" + (page + 2)).show();
+                if (prevpg.length == 0) nextpg = $("#pg" + (page + 3)).show();
+                if (prevpg.length == 1 && nextpg.length == 0) {
+                    prevpg = $("#pg" + (page - 1)).show();
+                }
+                $("#pg1").show()
+
+
+                if (page <= numPages - 3) {
+                    $("#pg" + numPages.toString()).show();
+                }
+                currpg.addClass("active").siblings().removeClass("active");
+                // Added few lines till here end
+
+
+                children.css('display', 'none').slice(startAt, endOn).show();
+
+                if (page >= 1) {
+                    pager.find('.prev_link').show();
+                } else {
+                    pager.find('.prev_link').hide();
+                }
+
+                if (page < (numPages - 1)) {
+                    pager.find('.next_link').show();
+                } else {
+                    pager.find('.next_link').hide();
+                }
+
+                pager.data("curr", page);
+                pager.children().removeClass("active");
+                pager.children().eq(page + 1).addClass("active");
+                if (pager.find('li .page_link').click) {
+                    console.log("hien thi");
+                    ptu();
+                }
+
+            }
+
+            hc = hc + 1;
+            console.log("cai nay co chay ko");
+            var numOfVisibleRows = $('tr').filter(function () {
+                return $(this).css('display') == 'table-row';
+            }).length;
+            console.log("num funtion ptu", numOfVisibleRows, typeof (numOfVisibleRows));
+            str = "Đang hiển thị ";
+            document.getElementById("dong").innerHTML = str + (numOfVisibleRows - 2).toString() + " dòng, ";
+
+
+
+
+
+
+        };
+
+
+    </script>
+</body>
+
+</html>

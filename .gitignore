@@ -1,0 +1,16 @@
+venv/
+website/__pycache__/
+website/__pycache__/*
+### VisualStudioCode ###
+.vscode/*
+**/__pycache__
+# Maybe .vscode/**/* instead - see comments
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+**/.history
+# update gitignore
