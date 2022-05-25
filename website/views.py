@@ -224,8 +224,8 @@ def sua_cauhoi():
 						u'date':  datetime.datetime.now(tz=datetime.timezone.utc)
 					})
 				add_action("sửa câu hỏi :",id_ques)
-				
-				return redirect(url_for('views.ques'))
+				return render_template("cauhoi.html",email=email,role=role,Id_cate_dkt=cate_dkt,Id_cate_dvkt=cate_dvkt,Id_cate_mtct=cate_mtct)
+				#return redirect(url_for('views.ques'))
 
 
 		return redirect(url_for('views.ques'))

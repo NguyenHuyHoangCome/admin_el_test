@@ -188,9 +188,9 @@
             <div class="container-fluid">
 
                 <!-- row -->
-                <h5 id="ho1" style="">{[Id_cate_dkt]}</h5>
-                <h5 id="ho2" style="">{[Id_cate_dvkt]}</h5>
-                <h5 id="ho3" style="">{[Id_cate_mtct]}</h5>
+                <h5 id="ho1" style="display: none;">{[Id_cate_dkt]}</h5>
+                <h5 id="ho2" style="display: none;">{[Id_cate_dvkt]}</h5>
+                <h5 id="ho3" style="display: none;">{[Id_cate_mtct]}</h5>
 
                 <div class="row">
                     <div class="col-12">
@@ -247,10 +247,10 @@
                                         <h5>Chọn số dòng hiển thị: </h5>
                                         <select class="form-control" aria-label="Default select example"
                                             @change="onChange4($event) " id="select_et" style="width: 100px;">
-                                            <option value="5"> 05</option>
-                                            <option value="10"> 10</option>
+                                            <option value="5" > 5</option>
+                                            <option value="10" > 10</option>
                                             <option value="20"> 20</option>
-                                            <option value="50"> 50</option>
+                                            <option value="50" selected> 50</option>
                                             <option value="100"> 100</option>
                                             <br>
                                         </select>
@@ -270,9 +270,9 @@
                                     <div class="col-11"></div>
 
                                     <div class="col" style="padding-left: 90%;">
-                                        <button class="btn btn-primary"><a href="/themques">Thêm câu hỏi</a></button>
+                                  
                                         <button class="btn btn-primary" @click="addquess()
-                                            ">add</button>
+                                            ">Thêm câu hỏi</button>
                                     </div>
                                 </div>
 
@@ -315,7 +315,7 @@
                                                             class="btn btn-rounded btn-outline-success">Sửa câu
                                                             hỏi</button></a></td>
                                                 <td style="width: 150px;"> <a :href="'/delete_ques/' + res.Id"><button
-                                                            type="button" class="btn btn-rounded btn-outline-danger">Xóa
+                                                            type="button" class="btn btn-rounded btn-outline-danger" onclick="thong_bao()">Xóa
                                                             câu
                                                             hỏi</button></a></td>
 
@@ -568,7 +568,7 @@
                         }).length;
                     console.log("chuyedvkt so dong getdvkt", numOfVisibleRows);
                     this.phan_tu = numOfVisibleRows - 2;
-
+                    this.get_taitau_hoangcam1()
                 },
 
                 async getmtct_ver2(e) {
@@ -578,6 +578,7 @@
                     } catch (err) {
                         console.log(err)
                     }
+                    this.get_taitau_hoangcam2()
                 },
 
 
@@ -642,23 +643,11 @@
 
 
                     console.log("oaisodiasodiopasidasbdub")
-                    var x2 = document.getElementById("ho2").innerText;
-                    //console.log(x)
-                    var options2 = document.getElementById('id02').options;
-                    for (let i = 0; i < options2.length; i++) {
-                        console.log(options2[i].value); //log the value
-                        if (x2 == options2[i].value) {
-                            options2[i].select == true;
-                            let text1 = "";
-                            let text2 = options2[i].value;
-                            let result = text1.concat(text2);
-                            document.getElementById(result).selected = "true";
-                        };
-                    }
+
 
 
                 },
-                 onChange_taitau(x) {
+                onChange_taitau(x) {
 
 
 
@@ -689,39 +678,39 @@
 
 
                     console.log("oaisodiasodiopasidasbdub")
-                   // await this.get_taitau_hoangcam1()
+                    // await this.get_taitau_hoangcam1()
 
 
                 },
                 onChange1(event) {
-
                     const $select1 = document.querySelector('#id03');
                     const $option1 = $select1.querySelector('#h3nul');
                     $select1.value = $option1.value;
-
                     document.getElementById("id03").disabled = false;
                     var select = event.target.value;
-
                     console.log(select);
                     let str = "/api/mtct2/" + select;
                     console.log(str);
-
                     this.getmtct_ver2(str);
-
-
-
-
-
                     const $select = document.querySelector('#id04');
                     const $option = $select.querySelector('#nu1');
                     $select.value = $option.value;
-
-
-
                     this.tim_kiem();
-
-
-
+                },
+                onChange1_taitau(x) {
+                    const $select1 = document.querySelector('#id03');
+                    const $option1 = $select1.querySelector('#h3nul');
+                    $select1.value = $option1.value;
+                    document.getElementById("id03").disabled = false;
+                    var select = x;
+                    console.log(select);
+                    let str = "/api/mtct2/" + select;
+                    console.log(str);
+                    this.getmtct_ver2(str);
+                    const $select = document.querySelector('#id04');
+                    const $option = $select.querySelector('#nu1');
+                    $select.value = $option.value;
+                    this.tim_kiem();
 
                 },
                 onChange2(event) {
@@ -734,6 +723,12 @@
                     this.tim_kiem();
 
 
+                },
+                onChange2_taitau(x) {
+                    const $select = document.querySelector('#id04');
+                    const $option = $select.querySelector('#nu1');
+                    $select.value = $option.value;
+                    this.tim_kiem();
                 },
 
 
@@ -968,9 +963,35 @@
 
                     window.location.href = "/login";
                 },
+                get_taitau_hoangcam2() {
+
+                    var x = document.getElementById("ho3").innerText;
+                    // this.dkt_id = document.getElementById("ho2").innerText;
+                    console.log(x)
+                    console.log("][][][][][))))))))))))))))))))(((((()(*&^%$#")
+
+                    // console.log(this.dkt_id)
+                    // console.log(this.list_user)
+                    var options = document.getElementById('id03').options;
+                    console.log(options[1])
+                    for (let i = 0; i < options.length; i++) {
+                        //console.log(options[i].value);//log the value
+                        if (x == options[i].value) {
+
+                            console.log(options[i])
+                            options[i].select == true;
+                            // let text1 = "";
+                            let text2 = options[i].value;
+                            let result = text2;
+                            document.getElementById(result).selected = "true";
+                        };
+                    }
+                    this.onChange2_taitau(x)
+
+                },
 
                 get_taitau_hoangcam1() {
-                    
+
                     var x = document.getElementById("ho2").innerText;
                     // this.dkt_id = document.getElementById("ho2").innerText;
                     console.log(x)
@@ -992,7 +1013,8 @@
                             document.getElementById(result).selected = "true";
                         };
                     }
-                 
+                    this.onChange1_taitau(x)
+
                 },
                 get_taitau_hoangcam() {
                     var x = document.getElementById("ho1").innerText;
@@ -1324,7 +1346,9 @@
     </script>
 
     <script>
-
+        function thong_bao(){
+            alert("Bạn có chắc chắn muốn xóa câu hỏi này không");
+        }
     </script>
 
 
