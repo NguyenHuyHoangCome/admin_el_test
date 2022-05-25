@@ -178,7 +178,7 @@
 
 
         </div>
-            Sidebar end
+        Sidebar end
         ***********************************-->
 
         <!--**********************************
@@ -188,7 +188,9 @@
             <div class="container-fluid">
 
                 <!-- row -->
-
+                <h5 id="ho1" style="">{[Id_cate_dkt]}</h5>
+                <h5 id="ho2" style="">{[Id_cate_dvkt]}</h5>
+                <h5 id="ho3" style="">{[Id_cate_mtct]}</h5>
 
                 <div class="row">
                     <div class="col-12">
@@ -199,7 +201,8 @@
                                 <select class="form-control" aria-label="Default select example"
                                     @change="onChange($event) " id="id01" style="width: 250px;" name="Id_cate_dkt">
                                     <option selected value="Null">Dạng kiến thức</option>
-                                    <option v-for="res in list_user" :key="res.Id" :value="res.Id"> {{res.Name}}
+                                    <option v-for="res in list_user" :key="res.Id" :value="res.Id" :id="res.Id">
+                                        {{res.Name}}
                                     </option>
 
                                     <br>
@@ -207,7 +210,8 @@
                                 <select class="form-control" aria-label="Default select example" disabled
                                     @change="onChange1($event)" id="id02" style="width: 250px;" name="Id_cate_dvkt">
                                     <option id="h2nul" selected value="Null">Đơn vị kiến thức</option>
-                                    <option v-for="res in list_user1" :key="res.Id" :value="res.Id"> {{res.Name}}
+                                    <option v-for="res in list_user1" :key="res.Id" :value="res.Id" :id="res.Id">
+                                        {{res.Name}}
                                     </option>
 
 
@@ -216,7 +220,8 @@
                                 <select class="form-control" aria-label="Default select example" id="id03" disabled
                                     @change="onChange2($event)" style="width: 250px;" name="Id_cate_mtct">
                                     <option id="h3nul" selected value="Null">Mô tả chi tiết</option>
-                                    <option v-for="res in list_user2" :key="res.Id" :value="res.Id"> {{res.Name}}
+                                    <option v-for="res in list_user2" :key="res.Id" :value="res.Id" :id="res.Id">
+                                        {{res.Name}}
                                     </option>
 
 
@@ -260,16 +265,16 @@
 
 
                                 </div>
-                              
+
                                 <div class="row">
-                                    <div class="col-11" ></div>
-                            
+                                    <div class="col-11"></div>
+
                                     <div class="col" style="padding-left: 90%;">
-                                        <button  class="btn btn-primary"><a href="/themques">Thêm câu hỏi</a></button>
-                                        <button  class="btn btn-primary" @click="addquess()
+                                        <button class="btn btn-primary"><a href="/themques">Thêm câu hỏi</a></button>
+                                        <button class="btn btn-primary" @click="addquess()
                                             ">add</button>
                                     </div>
-                                  </div>
+                                </div>
 
 
                                 <div class="table-responsive">
@@ -390,7 +395,7 @@
                                                             <h6>Ngày giờ</h6>
                                                             <h7 id="summernote6"></h7>
                                                         </div>
-                                                    
+
                                                     </div>
 
 
@@ -468,10 +473,10 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-        </script>
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-        </script>
+    </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -488,6 +493,7 @@
                 list_user2: [],
                 list_ques: [],
                 list_ques1: [],
+                dkt_id: '',
 
                 searchQuery: null,
                 tong: '',
@@ -505,6 +511,10 @@
                         this.phan_tu = et;
 
 
+
+
+
+
                         this.load_trang();
                     } catch (err) {
                         console.log(err)
@@ -515,6 +525,7 @@
                     try {
                         let res2 = await axios.get('/api/dkt_ver2');
                         this.list_user = res2.data;
+
 
                     } catch (err) {
                         console.log(err)
@@ -528,6 +539,7 @@
                             perPage: parseInt(et),
                         });
                     }, 0);
+                    this.get_taitau_hoangcam()
                 },
                 async getdvkt_ver2(e) {
                     try {
@@ -537,12 +549,15 @@
                         this.list_user1 = res3.data;
                         this.tong = Object.keys(res3.data).length;
                         console.log(this.list_user1);
+
+
+
                     } catch (err) {
                         console.log(err)
                     }
                     var et = document.getElementById("select_et").value;
                     await
-                        $('#myTable').pageMe({
+                    $('#myTable').pageMe({
                             pagerSelector: '#myPager',
                             showPrevNext: true,
                             hidePageNumbers: false,
@@ -567,7 +582,7 @@
 
 
                 // ##########################################################################################################################
-                addquess(){
+                addquess() {
                     const $select1 = document.querySelector('#id01');
                     const $option1 = $select1.querySelector('#id02');
                     const $option2 = $select1.querySelector('#id03');
@@ -580,16 +595,17 @@
                     var motachitiet1 = motachitiet.value;
 
                     console.log("%$&#(*%&(*$#&%(#$*&%(*$#&%#$");
-                    console.log("dangkienthuc1",dangkienthuc1)
-                    console.log("donvikienthuc1",donvikienthuc1)
-                    console.log("motachitiet1",motachitiet1)
+                    console.log("dangkienthuc1", dangkienthuc1)
+                    console.log("donvikienthuc1", donvikienthuc1)
+                    console.log("motachitiet1", motachitiet1)
 
-                    window.location.href = "/add_ques/"+dangkienthuc1+"&"+donvikienthuc1+"&"+motachitiet1;
+                    window.location.href = "/add_ques/" + dangkienthuc1 + "&" + donvikienthuc1 + "&" +
+                        motachitiet1;
                     //window.location.href = "/add_ques";
                     //window.location.href = "/add_ques/"+dangkienthuc1;
 
                 },
-             
+
 
 
 
@@ -597,6 +613,9 @@
 
                 onChange(event) {
 
+
+
+                    ////////////
                     const $select1 = document.querySelector('#id02');
                     const $option1 = $select1.querySelector('#h2nul');
                     $select1.value = $option1.value;
@@ -623,6 +642,54 @@
 
 
                     console.log("oaisodiasodiopasidasbdub")
+                    var x2 = document.getElementById("ho2").innerText;
+                    //console.log(x)
+                    var options2 = document.getElementById('id02').options;
+                    for (let i = 0; i < options2.length; i++) {
+                        console.log(options2[i].value); //log the value
+                        if (x2 == options2[i].value) {
+                            options2[i].select == true;
+                            let text1 = "";
+                            let text2 = options2[i].value;
+                            let result = text1.concat(text2);
+                            document.getElementById(result).selected = "true";
+                        };
+                    }
+
+
+                },
+                 onChange_taitau(x) {
+
+
+
+                    ////////////
+                    const $select1 = document.querySelector('#id02');
+                    const $option1 = $select1.querySelector('#h2nul');
+                    $select1.value = $option1.value;
+
+                    document.getElementById("id03").disabled = true;
+                    document.getElementById("id02").disabled = false;
+                    var select = x;
+
+                    console.log(select);
+                    let str = "/api/dvkt2/" + select;
+                    console.log(str);
+
+                    this.getdvkt_ver2(str);
+
+
+                    const $select = document.querySelector('#id04');
+                    const $option = $select.querySelector('#nu1');
+                    $select.value = $option.value;
+
+                    this.tim_kiem();
+
+
+
+
+
+                    console.log("oaisodiasodiopasidasbdub")
+                   // await this.get_taitau_hoangcam1()
 
 
                 },
@@ -805,6 +872,9 @@
                 },
 
                 async load_trang() {
+
+
+
                     var et = document.getElementById("select_et").value;
                     console.log(et);
                     console.log(typeof (et));
@@ -894,10 +964,61 @@
                         })
                         .catch(error => console.error(error));
                 },
-                goToHome(){
-         
+                goToHome() {
+
                     window.location.href = "/login";
-                    },
+                },
+
+                get_taitau_hoangcam1() {
+                    
+                    var x = document.getElementById("ho2").innerText;
+                    // this.dkt_id = document.getElementById("ho2").innerText;
+                    console.log(x)
+                    console.log("][][][][][))))))))))))))))))))(((((()(*&^%$#")
+
+                    // console.log(this.dkt_id)
+                    // console.log(this.list_user)
+                    var options = document.getElementById('id02').options;
+                    console.log(options[1])
+                    for (let i = 0; i < options.length; i++) {
+                        //console.log(options[i].value);//log the value
+                        if (x == options[i].value) {
+
+                            console.log(options[i])
+                            options[i].select == true;
+                            // let text1 = "";
+                            let text2 = options[i].value;
+                            let result = text2;
+                            document.getElementById(result).selected = "true";
+                        };
+                    }
+                 
+                },
+                get_taitau_hoangcam() {
+                    var x = document.getElementById("ho1").innerText;
+                    this.dkt_id = document.getElementById("ho1").innerText;
+                    console.log(x)
+                    console.log("][][][][][")
+
+                    console.log(this.dkt_id)
+                    console.log(this.list_user)
+                    var options = document.getElementById('id01').options;
+                    console.log(options[1].value)
+                    for (let i = 0; i < options.length; i++) {
+                        //console.log(options[i].value);//log the value
+                        if (x == options[i].value) {
+
+                            console.log(options[i])
+                            options[i].select == true;
+                            // let text1 = "";
+                            let text2 = options[i].value;
+                            let result = text2;
+                            document.getElementById(result).selected = "true";
+                        };
+                    }
+                    this.onChange_taitau(x)
+                    this.get_taitau_hoangcam1()
+                },
 
 
 
@@ -908,7 +1029,9 @@
                 this.getUser();
 
                 this.getdkt_ver2();
-             
+
+                //this.get_taitau_hoangcam();
+
 
 
 
@@ -1008,7 +1131,7 @@
                         id.push(newData[i].Id);
                         console.log("//////////////////")
 
-                        
+
 
                         if (newData[i].viewer.includes("{[email]}") == true) {
                             console.log("hi")
@@ -1107,6 +1230,7 @@
                 goTo(clickedPage, perPage);
                 return false;
             });
+
             function ptu() {
 
                 var numOfVisibleRows = $('tr').filter(function () {
@@ -1178,23 +1302,22 @@
                 pager.data("curr", page);
                 pager.children().removeClass("active");
                 pager.children().eq(page + 1).addClass("active");
-                if ( pager.find('li .page_link').click)
-       {
-         console.log("hien thi");
-         ptu();
-       }
+                if (pager.find('li .page_link').click) {
+                    console.log("hien thi");
+                    ptu();
+                }
             }
 
             hc = hc + 1
 
             console.log("cai nay co chay ko");
-      var numOfVisibleRows = $('tr').filter(function () {
-          return $(this).css('display') == 'table-row';
-        }).length;
-        console.log("num funtion ptu java", numOfVisibleRows, typeof(numOfVisibleRows));
-        str="Đang hiển thị ";
-        document.getElementById("dong").innerHTML = str + (numOfVisibleRows - 2).toString() +" dòng, " ;
-   
+            var numOfVisibleRows = $('tr').filter(function () {
+                return $(this).css('display') == 'table-row';
+            }).length;
+            console.log("num funtion ptu java", numOfVisibleRows, typeof (numOfVisibleRows));
+            str = "Đang hiển thị ";
+            document.getElementById("dong").innerHTML = str + (numOfVisibleRows - 2).toString() + " dòng, ";
+
 
 
         };

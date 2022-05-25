@@ -364,7 +364,8 @@ def basic():
 					}
 				)
 				add_action("sửa câu hỏi :",docId)
-				return redirect(url_for('views.ques'))
+				#return redirect(url_for('views.ques'))
+				return render_template("cauhoi.html",email=email,role=role,Id_cate_dkt=cate_dkt,Id_cate_dvkt=cate_dvkt,Id_cate_mtct=cate_mtct)
 		return render_template('themcauhoi.html',email=email,role=role)
 	else:
 		return redirect(url_for('auth.login'))
