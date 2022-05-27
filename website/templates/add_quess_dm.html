@@ -194,6 +194,22 @@
             <h1 class = "m-5" style="text-align: center;"> Thêm câu hỏi </h1>
             <div class="container-fluid">
                 <div class="row">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="col-12">
+        
+                        <div class="alert alert-danger solid alert-dismissible fade show">
+                            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close"><span><i class="mdi mdi-close"></i></span>
+                            </button>
+                            <strong>Lỗi !</strong>  {[ message ]} 
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="row">
                     <div class="col-12">
                         <form  action="/form" method="post" name="myForm" onsubmit="return validateForm()">
                             <div class="form-group">

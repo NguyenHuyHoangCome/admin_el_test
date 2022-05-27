@@ -417,7 +417,8 @@ def api_ques_id1(id,id1,id2):
 @api.route('/api/quess/<id>/<id1>/<id2>', methods=['GET', 'POST'])
 def api_ques_tu(id,id1,id2):
 	if(id=="Null"):
-		users_ref = db.collection(u'Question').stream()
+		users_ref = db.collection(u'Question').order_by(
+    u'date', direction=firestore.Query.DESCENDING).stream()
 		detail = []
 		deto = {}
 		for doc in users_ref:
@@ -430,7 +431,8 @@ def api_ques_tu(id,id1,id2):
 		
 		return jsonify(dictionary)
 	elif(id1=="Null" and id2=="Null"):
-		Quiz_detail = db.collection(u'Question').where(u'Id_cate_dkt', u'==', id).stream()
+		Quiz_detail = db.collection(u'Question').where(u'Id_cate_dkt', u'==', id).order_by(
+    u'date', direction=firestore.Query.DESCENDING).stream()
 		detail = []
 		deto = {}
 		for doc in Quiz_detail:
@@ -440,7 +442,8 @@ def api_ques_tu(id,id1,id2):
 		
 		return jsonify(detail)
 	elif(id2=="Null"):
-		Quiz_detail = db.collection(u'Question').where(u'Id_cate_dvkt', u'==', id1).stream()
+		Quiz_detail = db.collection(u'Question').where(u'Id_cate_dvkt', u'==', id1).order_by(
+    u'date', direction=firestore.Query.DESCENDING).stream()
 		detail = []
 		deto = {}
 		for doc in Quiz_detail:
@@ -450,7 +453,10 @@ def api_ques_tu(id,id1,id2):
 	
 		return jsonify(detail)
 	else:
-		Quiz_detail = db.collection(u'Question').where(u'Id_cate_mtct', u'==', id2).stream()
+		
+		Quiz_detail1 = db.collection(u'Question').where(u'Id_cate_mtct', u'==', id2).order_by(
+    u'date', direction=firestore.Query.DESCENDING)
+		Quiz_detail = Quiz_detail1.get()
 		detail = []
 		deto = {}
 		for doc in Quiz_detail:

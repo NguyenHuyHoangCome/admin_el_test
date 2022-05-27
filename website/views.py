@@ -350,9 +350,10 @@ def basic():
 				
 				except:
 					flash('Điền đầy đủ vào bạn ơiiii','sussess')
-					return redirect(url_for('views.basic'))
+					#return redirect(url_for('views.basic'))
+					return render_template("add_quess_dm.html",email=email,role=role,Id_cate_dkt=cate_dkt,Id_cate_dvkt=cate_dvkt,Id_cate_mtct=cate_mtct)
 				
-				d = db.collection('Question').add({'name_Question':question, 'Id_cate_dkt':cate_dkt ,'Id_cate_dvkt':cate_dvkt,'Id_cate_mtct':cate_mtct,'level':Level,'slug':Slug})
+				d = db.collection('Question').add({'name_Question':question, 'Id_cate_dkt':cate_dkt ,'Id_cate_dvkt':cate_dvkt,'Id_cate_mtct':cate_mtct,'level':Level,'slug':Slug,'date':  datetime.datetime.now()})
 				docId = d[1].id
 				new_city_ref = db.collection("Option").document()
 				new_city_ref.set(
